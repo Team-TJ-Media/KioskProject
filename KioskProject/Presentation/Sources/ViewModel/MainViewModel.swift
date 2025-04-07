@@ -9,4 +9,9 @@ import Foundation
 
 final class MainViewModel{
     
+    private let useCase: KioskUseCaseInterface
+    
+    init(useCase: KioskUseCaseInterface) {
+        self.useCase = useCase
+    }
 }
