@@ -10,6 +10,7 @@
 		14CAE2192DA3954700A199A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14CAE20D2DA3954700A199A0 /* Assets.xcassets */; };
 		14CAE21B2DA3954700A199A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14CAE2102DA3954700A199A0 /* LaunchScreen.storyboard */; };
 		14ECE7852D9E76F0003F701D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 14ECE7842D9E76F0003F701D /* .gitignore */; };
+		D612E41A2DA3C3ED00347811 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = D612E4192DA3C3ED00347811 /* RxCocoa */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D612E41A2DA3C3ED00347811 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +142,7 @@
 			);
 			name = KioskProject;
 			packageProductDependencies = (
+				D612E4192DA3C3ED00347811 /* RxCocoa */,
 			);
 			productName = TeamProject;
 			productReference = 14ECE76A2D9E7514003F701D /* KioskProject.app */;
@@ -169,6 +172,9 @@
 			);
 			mainGroup = 14ECE7612D9E7514003F701D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D612E4182DA3C3ED00347811 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 14ECE76B2D9E7514003F701D /* Products */;
 			projectDirPath = "";
@@ -228,6 +234,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -255,6 +262,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -411,6 +419,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D612E4182DA3C3ED00347811 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D612E4192DA3C3ED00347811 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D612E4182DA3C3ED00347811 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 14ECE7622D9E7514003F701D /* Project object */;
 }
