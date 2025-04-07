@@ -11,27 +11,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		14ECE76A2D9E7514003F701D /* TeamProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeamProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14ECE76A2D9E7514003F701D /* KioskProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KioskProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14ECE7842D9E76F0003F701D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		14ECE77C2D9E7515003F701D /* Exceptions for "TeamProject" folder in "TeamProject" target */ = {
+		14ECE77C2D9E7515003F701D /* Exceptions for "KioskProject" folder in "KioskProject" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 14ECE7692D9E7514003F701D /* TeamProject */;
+			target = 14ECE7692D9E7514003F701D /* KioskProject */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		14ECE76C2D9E7514003F701D /* TeamProject */ = {
+		14ECE76C2D9E7514003F701D /* KioskProject */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				14ECE77C2D9E7515003F701D /* Exceptions for "TeamProject" folder in "TeamProject" target */,
+				14ECE77C2D9E7515003F701D /* Exceptions for "KioskProject" folder in "KioskProject" target */,
 			);
-			path = TeamProject;
+			path = KioskProject;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -51,7 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				14ECE7842D9E76F0003F701D /* .gitignore */,
-				14ECE76C2D9E7514003F701D /* TeamProject */,
+				14ECE76C2D9E7514003F701D /* KioskProject */,
 				14ECE76B2D9E7514003F701D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,7 +59,7 @@
 		14ECE76B2D9E7514003F701D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				14ECE76A2D9E7514003F701D /* TeamProject.app */,
+				14ECE76A2D9E7514003F701D /* KioskProject.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -67,9 +67,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		14ECE7692D9E7514003F701D /* TeamProject */ = {
+		14ECE7692D9E7514003F701D /* KioskProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 14ECE77D2D9E7515003F701D /* Build configuration list for PBXNativeTarget "TeamProject" */;
+			buildConfigurationList = 14ECE77D2D9E7515003F701D /* Build configuration list for PBXNativeTarget "KioskProject" */;
 			buildPhases = (
 				14ECE7662D9E7514003F701D /* Sources */,
 				14ECE7672D9E7514003F701D /* Frameworks */,
@@ -80,13 +80,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				14ECE76C2D9E7514003F701D /* TeamProject */,
+				14ECE76C2D9E7514003F701D /* KioskProject */,
 			);
-			name = TeamProject;
+			name = KioskProject;
 			packageProductDependencies = (
 			);
 			productName = TeamProject;
-			productReference = 14ECE76A2D9E7514003F701D /* TeamProject.app */;
+			productReference = 14ECE76A2D9E7514003F701D /* KioskProject.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -104,7 +104,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 14ECE7652D9E7514003F701D /* Build configuration list for PBXProject "TeamProject" */;
+			buildConfigurationList = 14ECE7652D9E7514003F701D /* Build configuration list for PBXProject "KioskProject" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -118,7 +118,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				14ECE7692D9E7514003F701D /* TeamProject */,
+				14ECE7692D9E7514003F701D /* KioskProject */,
 			);
 		};
 /* End PBXProject section */
@@ -154,7 +154,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DD66GTY4AT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TeamProject/Info.plist;
+				INFOPLIST_FILE = KioskProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -165,7 +165,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamtj.TeamProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamtj.KioskProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -182,7 +182,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DD66GTY4AT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TeamProject/Info.plist;
+				INFOPLIST_FILE = KioskProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -193,7 +193,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamtj.TeamProject;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamtj.KioskProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -325,7 +325,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		14ECE7652D9E7514003F701D /* Build configuration list for PBXProject "TeamProject" */ = {
+		14ECE7652D9E7514003F701D /* Build configuration list for PBXProject "KioskProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14ECE7802D9E7515003F701D /* Debug */,
@@ -334,7 +334,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		14ECE77D2D9E7515003F701D /* Build configuration list for PBXNativeTarget "TeamProject" */ = {
+		14ECE77D2D9E7515003F701D /* Build configuration list for PBXNativeTarget "KioskProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				14ECE77E2D9E7515003F701D /* Debug */,
