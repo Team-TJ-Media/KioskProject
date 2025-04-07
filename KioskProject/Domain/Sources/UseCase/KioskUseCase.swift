@@ -13,4 +13,8 @@ final class KioskUseCase: KioskUseCaseInterface{
     init(repository: KioskRepositoryInterface) {
         self.repository = repository
     }
+    
+    func fetchProducts(type: ProductType) async throws -> [Product] {
+        return try await repository.fetchProducts(type: type)
+    }
 }
