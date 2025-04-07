@@ -19,7 +19,8 @@ final class MainViewController: UIViewController {
     
     init(DIContainer: KioskDIContainerInterface) {
         self.viewModel = DIContainer.makeMainViewModel()
-        super.init()
+        super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
