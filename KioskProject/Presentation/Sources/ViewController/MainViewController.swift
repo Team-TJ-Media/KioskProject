@@ -34,6 +34,9 @@ final class MainViewController: UIViewController {
         
         configureView()
         setConstraints()
+        
+        mainView.productCollectionView.delegate = self
+        mainView.productCollectionView.dataSource = self
     }
     
     private func configureView() {
@@ -44,7 +47,37 @@ final class MainViewController: UIViewController {
         NSLayoutConstraint.activate([
             mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             mainView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            mainView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            mainView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            mainView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+}
+
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCollectionViewCell.identifier, for: indexPath) as? ProductCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        return cell
+    }
+    
+}
+
+extension MainViewController: UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        let numberOfColumns: CGFloat = 2
+//        let spacing: CGFloat = 8
+//        let horizontalInset: CGFloat = 16
+//        
+//        let totalSpacing = spacing * (numberOfColumns - 1)
+//        let totalInset = horizontalInset * 2
+//        let availableWidth = collectionView.bounds.width - totalSpacing - totalInset
+//        let width = floor(availableWidth / numberOfColumns)
+//        
+//        return CGSize(width: width, height: width)
+//    }
 }

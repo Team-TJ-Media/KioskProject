@@ -15,33 +15,41 @@ final class CategoryView: UISegmentedControl {
         super.init(frame: frame)
         setupSegment()
         configureStyle()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+    }
+    
     private func setupSegment() {
         // 세그먼트 초기화
         categories.enumerated().forEach { index, title in
-            self.insertSegment(withTitle: title, at: index, animated: false)
+            self.insertSegment(withTitle: title, at: index, animated: true)
         }
+        
+        self.setBackgroundImage(UIImage(), for: .normal, barMetrics: .default)
+        self.setBackgroundImage(UIImage(), for: .selected, barMetrics: .default)
+        self.setBackgroundImage(UIImage(), for: .highlighted, barMetrics: .default)
+        
+        self.setDividerImage(UIImage(), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+        
         self.selectedSegmentIndex = 0
     }
     
     private func configureStyle() {
-        self.backgroundColor = .systemGray6
-        self.selectedSegmentTintColor = .black
-        self.layer.cornerRadius = 20
-        self.layer.masksToBounds = true
+//        self.backgroundColor = .systemBackground
+//        self.selectedSegmentTintColor = .black
         
         let normalAttributes: [NSAttributedString.Key : Any] = [
-            .foregroundColor: UIColor.gray,
+            .foregroundColor: UIColor.systemGray,
             .font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
         let selectedAttributes: [NSAttributedString.Key : Any] = [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor.black,
             .font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
         
