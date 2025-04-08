@@ -7,13 +7,11 @@
 
 import UIKit
 
+import SnapKit
+
 final class MainViewController: UIViewController {
     
-    private let mainView = {
-        let view = MainView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let mainView = MainView()
     
     private let viewModel: MainViewModel
     
@@ -27,35 +25,23 @@ final class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         
-        configureView()
-        setConstraints()
-        
         mainView.productCollectionView.delegate = self
         mainView.productCollectionView.dataSource = self
-    }
-    
-    private func configureView() {
-        view.addSubview(mainView)
-    }
-    
-    private func setConstraints() {
-        NSLayoutConstraint.activate([
-            mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            mainView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            mainView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            mainView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
     }
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return 11
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -65,19 +51,34 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
     }
     
-}
+    // 페이징(스크롤)을 위한 메서드, 2행의 상품이 지나가면 멈춤
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard let layout = self.mainView.productCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        
+        let cellWidthIncludingSpacing = (layout.itemSize.width * 2) + (layout.minimumLineSpacing * 2)
+        
+        let estimatedIndex = scrollView.contentOffset.x / cellWidthIncludingSpacing
+        let index: Int
+        
+        if velocity.x > 0 {
+            index = Int(ceil(estimatedIndex))
+        } else if velocity.x < 0 {
+            index = Int(floor(estimatedIndex))
+        } else {
+            index = Int(round(estimatedIndex))
+        }
+        
+        targetContentOffset.pointee = CGPoint(x: CGFloat(index) * cellWidthIncludingSpacing, y: 0)
+    }
+    
+    // 페이징(스크롤) 시 호출되는 메서드
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let layout = self.mainView.productCollectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+        let cellWidthIncludingSpacing = (layout.itemSize.width * 2) + (layout.minimumLineSpacing * 2)
 
-extension MainViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let numberOfColumns: CGFloat = 2
-//        let spacing: CGFloat = 8
-//        let horizontalInset: CGFloat = 16
-//        
-//        let totalSpacing = spacing * (numberOfColumns - 1)
-//        let totalInset = horizontalInset * 2
-//        let availableWidth = collectionView.bounds.width - totalSpacing - totalInset
-//        let width = floor(availableWidth / numberOfColumns)
-//        
-//        return CGSize(width: width, height: width)
-//    }
+        // 반 페이지 이상 넘어가면 현재 페이지를 업데이트
+        let currentPage = Int((scrollView.contentOffset.x + (0.5 * cellWidthIncludingSpacing)) / cellWidthIncludingSpacing)
+        mainView.pageControl.currentPage = currentPage
+    }
+    
 }

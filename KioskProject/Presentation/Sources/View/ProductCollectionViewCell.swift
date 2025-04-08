@@ -7,42 +7,34 @@
 
 import UIKit
 
+import SnapKit
+
+import Then
+
 final class ProductCollectionViewCell: UICollectionViewCell {
     
-    let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemBackground
-        view.layer.cornerRadius = 8
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    let containerView = UIView().then {
+        $0.backgroundColor = .systemBackground
+        $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
+    }
     
-    let productImageView = {
-        let view = UIImageView()
-        view.backgroundColor = .systemGray6
-        view.contentMode = .scaleAspectFit
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    let productImageView = UIImageView().then {
+        $0.backgroundColor = .systemGray3
+        $0.contentMode = .scaleAspectFit
+    }
     
-    let productNameLabel = {
-        let view = UILabel()
-        view.text = "iPhone 16 Pro"
-        view.textColor = .black
-        view.font = .systemFont(ofSize: 16, weight: .regular)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    let productNameLabel = UILabel().then {
+        $0.text = "iPhone 16 Pro"
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 16, weight: .regular)
+    }
     
-    let priceLabel = {
-        let view = UILabel()
-        view.text = "₩ 1,200,000"
-        view.textColor = .black
-        view.font = .systemFont(ofSize: 18, weight: .semibold)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    let priceLabel = UILabel().then {
+        $0.text = "₩ 1,200,000"
+        $0.textColor = .black
+        $0.font = .systemFont(ofSize: 18, weight: .semibold)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,6 +47,15 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.systemGray3.cgColor
+        self.layer.cornerRadius = 8
+        self.clipsToBounds = true
+    }
+    
     private func configureView() {
         contentView.addSubview(containerView)
         [productImageView, productNameLabel, priceLabel].forEach {
@@ -63,25 +64,27 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            
-            productImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            productImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            productImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            productImageView.heightAnchor.constraint(equalTo: productImageView.widthAnchor),
-
-            productNameLabel.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 8),
-            productNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-
-            priceLabel.topAnchor.constraint(equalTo: productNameLabel.bottomAnchor, constant: 8),
-            priceLabel.leadingAnchor.constraint(equalTo: productNameLabel.leadingAnchor),
-            priceLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
-        ])
+        
+        containerView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        productImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
+            $0.height.equalTo(productImageView.snp.width)
+        }
+        
+        productNameLabel.snp.makeConstraints {
+            $0.top.equalTo(productImageView.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(8)
+        }
+        
+        priceLabel.snp.makeConstraints {
+            $0.top.equalTo(productNameLabel.snp.bottom).offset(8)
+            $0.leading.equalTo(productNameLabel.snp.leading)
+//            $0.bottom.equalToSuperview().offset(-8)
+        }
     }
     
 }
