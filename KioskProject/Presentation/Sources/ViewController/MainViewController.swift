@@ -11,6 +11,12 @@ final class MainViewController: UIViewController {
     
     private let viewModel: MainViewModel
     
+    let mainView = MainView()
+    
+    override func loadView() {
+        view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

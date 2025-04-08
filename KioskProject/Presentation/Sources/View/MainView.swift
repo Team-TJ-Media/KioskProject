@@ -17,4 +17,34 @@ final class MainView: UIView {
     }
     */
 
+    let titleStackView = TitleStackView()
+    let orderButtonStackView = OrderButtonStackView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .white
+        
+        [titleStackView, orderButtonStackView].forEach {
+            addSubview($0)
+        }
+        
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setConstraints() {
+        titleStackView.translatesAutoresizingMaskIntoConstraints = false
+        titleStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+        titleStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        titleStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        
+        orderButtonStackView.translatesAutoresizingMaskIntoConstraints = false
+        orderButtonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
+        orderButtonStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        orderButtonStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+    }
 }
