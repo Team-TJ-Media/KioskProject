@@ -8,5 +8,5 @@
 import Foundation
 
 protocol KioskUseCaseInterface{
-    
+    func fetchProducts(type: ProductType) async throws -> [Product]
 }

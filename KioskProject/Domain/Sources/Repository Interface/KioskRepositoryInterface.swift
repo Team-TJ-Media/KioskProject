@@ -8,5 +8,5 @@
 import Foundation
 
 protocol KioskRepositoryInterface{
-    
+    func fetchProducts(type: ProductType) async throws -> [Product]
 }
