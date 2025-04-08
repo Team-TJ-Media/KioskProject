@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class OrderButton: UIButton {
     enum OrderStatus {
@@ -49,8 +50,9 @@ class OrderButton: UIButton {
             backgroundColor = .black
         }
         
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        snp.makeConstraints {
+            $0.height.equalTo(50)
+        }
     }
     
     required init?(coder: NSCoder) {

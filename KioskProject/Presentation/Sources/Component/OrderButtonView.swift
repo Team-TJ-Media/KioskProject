@@ -1,5 +1,5 @@
 //
-//  OrderButtonStackView.swift
+//  OrderButtonView.swift
 //  KioskProject
 //
 //  Created by 권순욱 on 4/8/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class OrderButtonStackView: UIStackView {
+class OrderButtonView: UIStackView {
     private let confirmButton = OrderButton(orderStatus: .confirm)
     private let cancelButton = OrderButton(orderStatus: .cancel)
     

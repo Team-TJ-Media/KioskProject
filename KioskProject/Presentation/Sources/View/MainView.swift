@@ -6,26 +6,18 @@
 //
 
 import UIKit
+import SnapKit
 
 final class MainView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
-    let titleStackView = TitleStackView()
-    let orderButtonStackView = OrderButtonStackView()
+    let titleView = TitleView()
+    let orderButtonView = OrderButtonView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .white
         
-        [titleStackView, orderButtonStackView].forEach {
+        [titleView, orderButtonView].forEach {
             addSubview($0)
         }
         
@@ -37,14 +29,16 @@ final class MainView: UIView {
     }
     
     func setConstraints() {
-        titleStackView.translatesAutoresizingMaskIntoConstraints = false
-        titleStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        titleStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        titleStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        titleView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(8)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-20)
+        }
         
-        orderButtonStackView.translatesAutoresizingMaskIntoConstraints = false
-        orderButtonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
-        orderButtonStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        orderButtonStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        orderButtonView.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-8)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-20)
+        }
     }
 }
