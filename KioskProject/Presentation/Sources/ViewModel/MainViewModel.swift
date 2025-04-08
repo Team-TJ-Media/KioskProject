@@ -23,15 +23,19 @@ final class MainViewModel: ViewModel{
     
     struct Input {
         let selectedIndex: Observable<Int>
+        let selectedCell: Observable<Int>
     }
     
     struct Output {
         let setInfo: BehaviorSubject<[Product]>
+        let setItem: PublishSubject<Product>
     }
     
     var disposeBag = DisposeBag()
     
-    private let products = BehaviorSubject<[Product]>(value: [])
+    
+    private let products = BehaviorSubject<[Product]>(value:[])
+    private let product = PublishSubject<Product>()
     
     private let useCase: KioskUseCaseInterface
     
@@ -39,7 +43,7 @@ final class MainViewModel: ViewModel{
         self.useCase = useCase
     }
     
-    func fetchProducts(type: ProductType) {
+    private func fetchProducts(type: ProductType) {
         Task{
             do{
                 let products = try await useCase.fetchProducts(type: type)
@@ -50,6 +54,15 @@ final class MainViewModel: ViewModel{
         }
     }
     
+    private func addToCart(index:Int){
+        do{
+            let products = try products.value()
+            let product = products[index]
+            self.product.onNext(product)
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
     func transform(input: Input) -> Output {
         input.selectedIndex
             .subscribe(onNext: { [weak self] index in
@@ -62,8 +75,13 @@ final class MainViewModel: ViewModel{
                 }
             })
             .disposed(by: disposeBag)
-        
-        return Output(setInfo: products)
+        input.selectedCell
+            .withLatestFrom(products) { index, products in
+                products[index]
+            }
+            .bind(to: product)
+            .disposed(by: disposeBag)
+        return Output(setInfo: products, setItem: product)
     }
 }
 
