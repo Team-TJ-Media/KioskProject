@@ -32,62 +32,20 @@ struct ProductResponse: Codable {
     let thumbnail: String
     
     func toEntity() -> Product{
-        return Product(id: id,
-                      title: title,
-                      description: description,
-                      category: category,
-                      price: price,
-                      discountPercentage: discountPercentage,
-                      rating: rating,
-                      stock: stock,
-                      tags: tags,
-                      brand: brand,
-                      sku: sku,
-                      weight: weight,
-                      dimensions: dimensions.toEntity(),
-                      warrantyInformation: warrantyInformation,
-                      shippingInformation: shippingInformation,
-                      availabilityStatus: availabilityStatus,
-                      reviews: reviews.map{$0.toEntity()},
-                      returnPolicy: returnPolicy,
-                      minimumOrderQuantity: minimumOrderQuantity,
-                      meta: meta.toEntity(),
-                      images: images,
-                      thumbnail: thumbnail)
+        return Product(id: id, title: title, price: price, thumbnail: thumbnail)
     }
 }
 
 struct DimensionsResponse: Codable {
     let width, height, depth: Double
-    
-    func toEntity() -> Dimensions{
-        return Dimensions(width: width,
-                          height: height,
-                          depth: depth)
-    }
 }
 
 struct ReviewResponse: Codable {
     let rating: Int
     let comment, date, reviewerName, reviewerEmail: String
-    
-    func toEntity() -> Review{
-        return Review(rating: rating,
-                      comment: comment,
-                      date: date,
-                      reviewerName: reviewerName,
-                      reviewerEmail: reviewerEmail)
-    }
 }
 
 struct MetaResponse: Codable {
     let createdAt, updatedAt, barcode: String
     let qrCode: String
-    
-    func toEntity() -> Meta{
-        return Meta(createdAt: createdAt,
-                    updatedAt: updatedAt,
-                    barcode: barcode,
-                    qrCode: qrCode)
-    }
 }
