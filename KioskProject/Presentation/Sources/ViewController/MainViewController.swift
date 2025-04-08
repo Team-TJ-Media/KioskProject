@@ -15,16 +15,6 @@ final class MainViewController: UIViewController {
     
     private let viewModel: MainViewModel
     
-    init(DIContainer: KioskDIContainerInterface) {
-        self.viewModel = DIContainer.makeMainViewModel()
-        super.init(nibName: nil, bundle: nil)
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func loadView() {
         view = mainView
     }
@@ -36,6 +26,16 @@ final class MainViewController: UIViewController {
         
         mainView.productCollectionView.delegate = self
         mainView.productCollectionView.dataSource = self
+    }
+    
+    init(DIContainer: KioskDIContainerInterface) {
+        self.viewModel = DIContainer.makeMainViewModel()
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

@@ -13,6 +13,9 @@ import Then
 
 final class MainView: UIView {
     
+    let titleView = TitleView()
+    let orderButtonView = OrderButtonView()
+    
     let categoryView = CategoryView(frame: .zero)
     
     let productCollectionView = ProductCollectionView()
@@ -36,7 +39,7 @@ final class MainView: UIView {
     }
     
     private func configureView() {
-        [categoryView, productCollectionView, pageControl].forEach {
+        [titleView, orderButtonView, categoryView, productCollectionView, pageControl].forEach {
             self.addSubview($0)
         }
     }
@@ -47,8 +50,14 @@ final class MainView: UIView {
         // 여기서 item의 높이를 지정해주고 있는데 현재는 임의로 가로 + 60으로 지정해주는 중
         let height = width + 70
         
+        titleView.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(8)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-20)
+        }
+        
         categoryView.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide)
+            $0.top.equalTo(titleView.snp.bottom).offset(16)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
             $0.height.equalTo(44)
         }
@@ -63,6 +72,11 @@ final class MainView: UIView {
             $0.top.equalTo(productCollectionView.snp.bottom).offset(8)
             $0.centerX.equalToSuperview()
         }
+        
+        orderButtonView.snp.makeConstraints {
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-8)
+            $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
+            $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-20)
+        }
     }
-    
 }
