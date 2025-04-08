@@ -30,6 +30,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		143579E22DA54680003475C7 /* Component */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Component;
+			sourceTree = "<group>";
+		};
 		14CAE3D02DA5295400A199A0 /* View */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = View;
@@ -139,6 +144,7 @@
 		14CAE3C02DA5290300A199A0 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				143579E22DA54680003475C7 /* Component */,
 				14CAE3B42DA5290300A199A0 /* DIContainer Interface */,
 				14CAE3D02DA5295400A199A0 /* View */,
 				14CAE3BD2DA5290300A199A0 /* ViewController */,
@@ -180,6 +186,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				143579E22DA54680003475C7 /* Component */,
 				14CAE3D02DA5295400A199A0 /* View */,
 				9FEE48C12DA39C5C00C2705C /* Sources */,
 				9FEE48C32DA39C7200C2705C /* Domain */,

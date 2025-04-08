@@ -57,19 +57,20 @@ final class MainView: UIView {
         }
         
         categoryView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom).offset(16)
+            $0.top.equalTo(titleView.snp.bottom).offset(8)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
             $0.height.equalTo(44)
         }
         
         productCollectionView.snp.makeConstraints {
-            $0.top.equalTo(categoryView.snp.bottom).offset(16)
+            $0.top.equalTo(categoryView.snp.bottom)//.offset(8)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            $0.height.equalTo(height * 2 + spacing * 3)
+//            $0.height.equalTo(height * 2 + spacing * 3)
+            $0.height.equalToSuperview().dividedBy(2)
         }
         
         pageControl.snp.makeConstraints {
-            $0.top.equalTo(productCollectionView.snp.bottom).offset(8)
+            $0.top.equalTo(productCollectionView.snp.bottom)//.offset(8)
             $0.centerX.equalToSuperview()
         }
         
