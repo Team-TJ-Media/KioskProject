@@ -27,9 +27,23 @@ final class MainViewController: UIViewController {
         self.viewModel = DIContainer.makeMainViewModel()
         super.init(nibName: nil, bundle: nil)
         
+        mainView.cartView.tableView.dataSource = self
+        mainView.cartView.tableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseIdentifier)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.reuseIdentifier, for: indexPath) as! CartTableViewCell
+        cell.setupUI(productName: "iPhone 15", orderCount: 1, orderAmounts: 300000)
+        return cell
     }
 }

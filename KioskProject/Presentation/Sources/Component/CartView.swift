@@ -6,41 +6,46 @@
 //
 
 import UIKit
+import SnapKit
 import Then
 
-class CartView: UIView {
+class CartView: UIStackView {
+    var orderCount: Int
+    
     private let titleLabel = UILabel().then {
-        $0.text = "장바구니"
+        $0.text = " 장바구니"
         $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
-    private let tableView = CartTableView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        addSubview(titleLabel)
-        addSubview(tableView)
-        
-        setConstraints()
+    private lazy var orderCountLabel = UILabel().then {
+        $0.text = "총 \(orderCount)개 "
+        $0.font = .systemFont(ofSize: 16)
     }
     
-    required init?(coder: NSCoder) {
+    private let titleStackView = UIStackView()
+    
+    let tableView = CartTableView()
+    
+    init(orderCount: Int = 3) {
+        self.orderCount = orderCount
+        super.init(frame: .zero)
+        
+        [titleLabel, orderCountLabel].forEach {
+            titleStackView.addArrangedSubview($0)
+        }
+        titleStackView.axis = .horizontal
+        titleStackView.distribution = .equalSpacing
+        titleStackView.alignment = .bottom
+        
+        [titleStackView, tableView].forEach {
+            addArrangedSubview($0)
+        }
+        axis = .vertical
+        spacing = 4
+    }
+    
+    required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setConstraints() {
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(4)
-            $0.trailing.equalToSuperview()
-        }
-        
-        tableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(4)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
     }
 }
 
