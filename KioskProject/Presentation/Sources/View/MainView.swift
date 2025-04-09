@@ -17,7 +17,7 @@ final class MainView: UIView {
     let orderButtonView = OrderButtonView()
     
     let categoryView = CategoryView(frame: .zero)
-    
+    let tableView = UITableView()                                                                           //삭제할 것
     let productCollectionView = ProductCollectionView()
     
     let pageControl = UIPageControl().then {
@@ -32,6 +32,7 @@ final class MainView: UIView {
         
         configureView()
         setConstraints()
+        tableView.register(CartItemCell.self, forCellReuseIdentifier: CartItemCell.identifier)              //삭제할 것
     }
     
     required init?(coder: NSCoder) {
@@ -39,7 +40,7 @@ final class MainView: UIView {
     }
     
     private func configureView() {
-        [titleView, orderButtonView, categoryView, productCollectionView, pageControl].forEach {
+        [titleView, orderButtonView, categoryView, productCollectionView, tableView, pageControl].forEach { //삭제할 것
             self.addSubview($0)
         }
     }
@@ -74,6 +75,11 @@ final class MainView: UIView {
             $0.centerX.equalToSuperview()
         }
         
+        tableView.snp.makeConstraints {                                                     //삭제할 것
+            $0.top.equalTo(pageControl.snp.bottom)
+            $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
+            $0.height.equalTo(100)
+        }
         orderButtonView.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-8)
             $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
