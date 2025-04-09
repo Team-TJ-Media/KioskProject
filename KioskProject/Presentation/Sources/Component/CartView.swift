@@ -12,19 +12,19 @@ import Then
 class CartView: UIStackView {
     var orderCount: Int
     
+    let tableView = CartTableView()
+    
     private let titleLabel = UILabel().then {
         $0.text = " 장바구니"
         $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
     
+    private let titleStackView = UIStackView()
+    
     private lazy var orderCountLabel = UILabel().then {
         $0.text = "총 \(orderCount)개 "
         $0.font = .systemFont(ofSize: 16)
     }
-    
-    private let titleStackView = UIStackView()
-    
-    let tableView = CartTableView()
     
     init(orderCount: Int = 3) {
         self.orderCount = orderCount

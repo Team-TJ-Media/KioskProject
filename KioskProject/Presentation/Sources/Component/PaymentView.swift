@@ -46,6 +46,9 @@ class PaymentView: UIView {
 }
 
 class PaymentStackView: UIStackView {
+    var totalAmounts: Int
+    var deliveryFee: Int
+    
     private let totalAmountTitle = UILabel().then {
         $0.text = "상품 금액"
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -57,6 +60,9 @@ class PaymentStackView: UIStackView {
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.textColor = .gray
     }
+    
+    private let totalAmountView = UIStackView()
+    private let deliveryFeeView = UIStackView()
     
     private lazy var totalAmountLabel = UILabel().then {
         $0.text = "\(wonFormatter(totalAmounts))"
@@ -75,12 +81,6 @@ class PaymentStackView: UIStackView {
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
         $0.textColor = .black
     }
-    
-    private let totalAmountView = UIStackView()
-    private let deliveryFeeView = UIStackView()
-    
-    var totalAmounts: Int
-    var deliveryFee: Int
     
     init(totalAmounts: Int = 600000, deliveryFee: Int = 2500) {
         self.totalAmounts = totalAmounts

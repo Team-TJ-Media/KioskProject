@@ -41,6 +41,7 @@ final class MainView: UIView {
         }
         
         cartView.snp.makeConstraints {
+            // $0.top.equalTo(titleView.snp.bottom).offset(8)
             $0.leading.equalTo(safeAreaLayoutGuide.snp.leading).offset(20)
             $0.trailing.equalTo(safeAreaLayoutGuide.snp.trailing).offset(-20)
             $0.height.equalTo(180)

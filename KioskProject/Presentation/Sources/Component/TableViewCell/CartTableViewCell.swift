@@ -71,7 +71,7 @@ class CartTableViewCell: UITableViewCell {
     private func setConstraints() {
         productNameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
-            $0.leading.equalToSuperview().offset(8)
+            $0.leading.equalToSuperview().offset(16)
             $0.bottom.equalToSuperview().offset(-4)
         }
         
@@ -83,7 +83,7 @@ class CartTableViewCell: UITableViewCell {
         
         orderamountsLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(4)
-            $0.trailing.equalToSuperview().offset(-8)
+            $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-4)
         }
         
