@@ -36,7 +36,7 @@ final class MainView: UIView {
     let paymentView = PaymentView()
     
     let orderButtonView = OrderButtonView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -66,7 +66,8 @@ final class MainView: UIView {
         let spacing: CGFloat = 16
         let width = (UIScreen.main.bounds.width - spacing * 3) / 2
         // 여기서 item의 높이를 지정해주고 있는데 현재는 임의로 가로 + 60으로 지정해주는 중
-        let height = width + 70
+        let height = (width * 0.6) + 60
+//        let height = (bounds.height - totalSpacing) / 2
         
         mainScrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
@@ -94,8 +95,8 @@ final class MainView: UIView {
         productCollectionView.snp.makeConstraints {
             $0.top.equalTo(categoryView.snp.bottom)//.offset(8)
             $0.horizontalEdges.equalToSuperview()
-//            $0.height.equalTo(height * 2 + spacing * 3)
-            $0.height.equalToSuperview().dividedBy(2)
+            $0.height.equalTo(height * 2 + spacing * 3)
+//            $0.height.equalToSuperview().dividedBy(2)
         }
         
         pageControl.snp.makeConstraints {
@@ -107,11 +108,10 @@ final class MainView: UIView {
             $0.top.equalTo(pageControl.snp.bottom).offset(8)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.height.equalTo(180)
         }
         
         paymentView.snp.makeConstraints {
-            $0.top.equalTo(cartView.snp.bottom).offset(8)
+            $0.top.equalTo(cartView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview()

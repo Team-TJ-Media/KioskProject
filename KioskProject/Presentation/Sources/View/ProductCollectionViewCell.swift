@@ -72,7 +72,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         productImageView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
-            $0.height.equalToSuperview().multipliedBy(0.7)
+            $0.height.equalToSuperview().multipliedBy(0.6)
         }
         
         productNameLabel.snp.makeConstraints {

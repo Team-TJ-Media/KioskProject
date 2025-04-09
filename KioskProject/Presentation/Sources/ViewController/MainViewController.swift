@@ -15,6 +15,8 @@ final class MainViewController: UIViewController {
     
     private let viewModel: MainViewModel
     
+    private var items = ["1", "2", "3", "4", "1", "2", "3", "4"]
+    
     override func loadView() {
         view = mainView
     }
@@ -24,13 +26,23 @@ final class MainViewController: UIViewController {
         
         mainView.productCollectionView.delegate = self
         mainView.productCollectionView.dataSource = self
+        
+        setTableViewData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        mainView.cartView.updateTableViewHeight()
+        
+//        mainView.layoutIfNeeded()
+        
     }
     
     init(DIContainer: KioskDIContainerInterface) {
         self.viewModel = DIContainer.makeMainViewModel()
         super.init(nibName: nil, bundle: nil)
         
-        setTableViewData()
     }
     
     required init?(coder: NSCoder) {
@@ -38,13 +50,13 @@ final class MainViewController: UIViewController {
     }
     
     private func setTableViewData() {
-        mainView.cartView.tableView.dataSource = self
-        mainView.cartView.tableView.delegate = self
+        mainView.cartView.cartTableView.dataSource = self
+        mainView.cartView.cartTableView.delegate = self
         
-        mainView.cartView.tableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseIdentifier)
-        mainView.cartView.tableView.register(TotalAmountCell.self, forCellReuseIdentifier: TotalAmountCell.reuseIdentifier)
+        mainView.cartView.cartTableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseIdentifier)
+        mainView.cartView.cartTableView.register(TotalAmountCell.self, forCellReuseIdentifier: TotalAmountCell.reuseIdentifier)
         
-        mainView.cartView.tableView.separatorStyle = .none
+        mainView.cartView.cartTableView.separatorStyle = .none
     }
 }
 
@@ -55,7 +67,7 @@ extension MainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 { // 각 상품별 구매수량 및 금액
-            return 4
+            return items.count
         } else { // 총 금액
             return 1
         }
