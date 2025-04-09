@@ -8,15 +8,21 @@
 import UIKit
 
 class OrderButtonView: UIStackView {
+    
     private let confirmButton = OrderButton(orderStatus: .confirm)
     private let cancelButton = OrderButton(orderStatus: .cancel)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        [confirmButton, cancelButton].forEach { addArrangedSubview($0) }
-        axis = .vertical
-        spacing = 8
+        [confirmButton, cancelButton].forEach {
+            self.addArrangedSubview($0)
+        }
+        
+        self.axis = .vertical
+        self.spacing = 8
+        self.isLayoutMarginsRelativeArrangement = true
+        self.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
     }
     
     required init(coder: NSCoder) {
