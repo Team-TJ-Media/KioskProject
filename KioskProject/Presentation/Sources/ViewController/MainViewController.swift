@@ -8,74 +8,89 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
 import SnapKit
 
 
-final class MainViewController: UIViewController,CartCellDelegate {
-  
+final class MainViewController: UIViewController {
+
     private let mainView = MainView()
-    
     private let viewModel: MainViewModel
     private let disposeBag = DisposeBag()
-    
-    
+
+    // Relay로 ViewModel에 명령 전달
+    private let increaseRelay = PublishRelay<Int>()
+    private let decreaseRelay = PublishRelay<Int>()
+    private let removeRelay = PublishRelay<Product>()
+
     override func loadView() {
-        super.loadView()
         view = mainView
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModel()
         view.backgroundColor = .systemBackground
+        bindViewModel()
     }
-    
+
     init(DIContainer: KioskDIContainerInterface) {
         self.viewModel = DIContainer.makeMainViewModel()
         super.init(nibName: nil, bundle: nil)
-        
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func bindViewModel(){
-        
+
+    private func bindViewModel() {
         let input = MainViewModel.Input(
             selectedIndex: mainView.categoryView.rx.selectedSegmentIndex.asObservable(),
-            selectedCell: mainView.productCollectionView.rx.itemSelected.map{$0.row}.asObservable()
+            selectedCell: mainView.productCollectionView.rx.itemSelected.map { $0.row }.asObservable(),
+            increaseTapped: increaseRelay.asObservable(),
+            decreaseTapped: decreaseRelay.asObservable(),
+            removeTapped: removeRelay.asObservable()
         )
+
         let output = viewModel.transform(input: input)
-        
+
         output.setInfo
             .observe(on: MainScheduler.instance)
             .bind(to: mainView.productCollectionView.rx.items(
-                    cellIdentifier: ProductCollectionViewCell.identifier,
-                    cellType: ProductCollectionViewCell.self)
-            ){ _, product, cell in
+                cellIdentifier: ProductCollectionViewCell.identifier,
+                cellType: ProductCollectionViewCell.self)
+            ) { _, product, cell in
                 cell.configure(product: product)
             }
             .disposed(by: disposeBag)
-        
+
         output.setCart
             .observe(on: MainScheduler.instance)
             .bind(to: mainView.tableView.rx.items(
                 cellIdentifier: CartItemCell.identifier,
                 cellType: CartItemCell.self)
-            ){ _, cartItem, cell in
-                let vm = CartItemCellViewModel(cartItem: cartItem)
-                cell.binding(viewModel: vm)
+            ) { [weak self] _, cartItem, cell in
+                guard let self else { return }
+                cell.configure(item: cartItem)
                 cell.delegate = self
             }
             .disposed(by: disposeBag)
     }
+}
+// MARK: - CartCellDelegate
+extension MainViewController: CartCellDelegate{
     
-    func removeFormCart(product: Product) {
-        self.viewModel.removeFromCart(product: product)
+    func didTapIncrease(cell: CartItemCell) {
+        guard let indexPath = mainView.tableView.indexPath(for: cell) else { return }
+        increaseRelay.accept(indexPath.row)
     }
-    
+
+    func didTapDecrease(cell: CartItemCell) {
+        guard let indexPath = mainView.tableView.indexPath(for: cell) else { return }
+        decreaseRelay.accept(indexPath.row)
+    }
+
+    func removeFormCart(product: Product) {
+        removeRelay.accept(product)
+    }
 }
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -125,19 +140,19 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 final class CartItemCell: UITableViewCell {
     
     static let identifier = "CartItemCell"
+        
     // MARK: - UI
     private let titleLabel = UILabel()
     private let priceLabel = UILabel()
-    private let countLabel = UILabel()
+    let countLabel = UILabel()
     private let plusButton = UIButton(type: .system)
     private let minusButton = UIButton(type: .system)
     
     // MARK: - Rx
-    private var disposeBag = DisposeBag()
-    private var viewModel: CartItemCellViewModel?
+    var disposeBag = DisposeBag()
     
     weak var delegate: CartCellDelegate?
-    
+
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -150,35 +165,30 @@ final class CartItemCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
+        disposeBag = DisposeBag() // 셀 재사용 시 Rx 초기화
     }
-    
-    func binding(viewModel: CartItemCellViewModel) {
-        self.viewModel = viewModel
-        
-        let input = CartItemCellViewModel.Input(
-            increaseTapped: plusButton.rx.tap.asObservable(),
-            decreaseTapped: minusButton.rx.tap.asObservable()
-        )
-        
-        let output = viewModel.transform(input: input)
-        
-        output.addFromCart
-            .bind(onNext: { [weak self] item in
-                guard let self else {return}
-                self.titleLabel.text = item.title
-                self.priceLabel.text = "\(item.price)"
-            })
+
+    // MARK: - Configuration
+    func configure(item: CartItem) {
+        titleLabel.text = item.product.title
+        priceLabel.text = "\(item.product.price)원"
+        countLabel.text = "\(item.count)"
+        bindActions()
+    }
+
+    private func bindActions() {
+        plusButton.rx.tap
+            .bind { [weak self] in
+                guard let self else { return }
+                self.delegate?.didTapIncrease(cell: self)
+            }
             .disposed(by: disposeBag)
-        
-        output.countText
-            .bind(to: countLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        output.removeFromCart
-            .subscribe(onNext: { [weak self] cartItem in
-                self?.delegate?.removeFormCart(product: cartItem)
-            })
+
+        minusButton.rx.tap
+            .bind { [weak self] in
+                guard let self else { return }
+                self.delegate?.didTapDecrease(cell: self)
+            }
             .disposed(by: disposeBag)
     }
     
@@ -186,6 +196,8 @@ final class CartItemCell: UITableViewCell {
     private func setupUI() {
         plusButton.setTitle("+", for: .normal)
         minusButton.setTitle("-", for: .normal)
+        countLabel.text = "1"
+        
         countLabel.textAlignment = .center
         countLabel.font = UIFont.boldSystemFont(ofSize: 16)
 
@@ -207,6 +219,5 @@ final class CartItemCell: UITableViewCell {
     }
 }
 
-protocol CartCellDelegate:AnyObject{
-    func removeFormCart(product:Product)
-}
+
+
