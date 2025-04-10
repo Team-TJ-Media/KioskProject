@@ -120,7 +120,13 @@ final class MainViewController: UIViewController {
         output.showAlert
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] type in
-                self?.showAlert(type: type)
+                self?.showAlert(type: type) {
+                    switch type{
+                    case .confirmCancel,.confirmOrder(_):
+                        self?.viewModel.removeAllCart()
+                    case .emptyCart: return
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
@@ -139,8 +145,9 @@ final class MainViewController: UIViewController {
                     CartSection(model: "amount", items: [amountItem])
                 ]
             }
-            .bind(to: mainView.cartView.cartTableView.rx.items(dataSource: dataSources))
+            .bind(to:  mainView.cartView.cartTableView.rx.items(dataSource: dataSources))
             .disposed(by: disposeBag)
+        
     }
 }
 

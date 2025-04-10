@@ -157,6 +157,11 @@ final class MainViewModel: ViewModel {
             .bind(to: showAlert)
             .disposed(by: disposeBag)
     }
+    func removeAllCart(){
+        totalNum.accept(0)
+        totalAmount.accept(0)
+        cartItems.accept([])
+    }
     
     //총 개수 계산
     private func calculateTotalCount(items:[CartItem]) {
