@@ -63,7 +63,6 @@ class CartTableViewCell: UITableViewCell {
         productNameLabel.text = item.product.title
         orderAmountsLabel.text = item.totalPrice.wonFormatter()
         orderCountLabel.text = "\(item.count)"
-        delegate?.addedCart()
         bindActions()
     }
     
@@ -111,7 +110,6 @@ class CartTableViewCell: UITableViewCell {
     }
 
     // MARK: - Actions
-    
     private func bindActions() {
         incrementButton.rx.tap
             .bind { [weak self] in

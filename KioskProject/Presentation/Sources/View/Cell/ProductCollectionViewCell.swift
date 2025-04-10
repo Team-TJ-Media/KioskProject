@@ -46,6 +46,13 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        productImageView.image = nil
+        productNameLabel.text = nil
+        priceLabel.text = nil
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -54,11 +61,13 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = 8
         self.clipsToBounds = true
     }
-    public func configure(product:Product){
+    
+    public func configure(product: Product) {
         productImageView.kf.setImage(with: URL(string: product.thumbnail))
         productNameLabel.text = product.title
         priceLabel.text = product.price.wonFormatter()
     }
+    
     private func configureView() {
         contentView.addSubview(containerView)
         [productImageView, productNameLabel, priceLabel].forEach {
@@ -67,7 +76,6 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupConstraints() {
-        
         containerView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -75,7 +83,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         productImageView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
-//            $0.height.equalTo(productImageView.snp.width)
+            $0.height.equalTo(productImageView.snp.width).multipliedBy(0.6)
         }
         
         productNameLabel.snp.makeConstraints {
@@ -85,8 +93,8 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(productNameLabel.snp.bottom).offset(8)
-            $0.leading.equalTo(productNameLabel.snp.leading)
-            $0.bottom.equalToSuperview().offset(-8)
+            $0.horizontalEdges.equalToSuperview().inset(8)
+//            $0.bottom.equalToSuperview().offset(-8)
         }
     }
     

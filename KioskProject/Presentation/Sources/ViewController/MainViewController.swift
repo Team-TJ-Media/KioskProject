@@ -6,9 +6,11 @@
 //
 
 import UIKit
+
+import SnapKit
+
 import RxSwift
 import RxCocoa
-import SnapKit
 import RxDataSources
 
 //MARK: MainViewController
@@ -37,6 +39,7 @@ final class MainViewController: UIViewController {
             }
         )
     }
+    
     init(DIContainer: KioskDIContainerInterface) {
         self.viewModel = DIContainer.makeMainViewModel()
         super.init(nibName: nil, bundle: nil)
@@ -45,10 +48,12 @@ final class MainViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //뷰 초기화
     override func loadView() {
         view = mainView
     }
+    
     //뷰 로드 후
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,28 +61,22 @@ final class MainViewController: UIViewController {
         serCollectionViewData()
         bindViewModel()
     }
-    //뷰 레이아웃 설정 후
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        view.backgroundColor = .systemBackground
-        mainView.cartView.updateTableViewHeight()
-    }
+    
     //컬렉션 뷰 세팅
     private func serCollectionViewData(){
-        mainView.productCollectionView.rx.setDelegate(self).disposed(by: disposeBag)
+        mainView.productCollectionView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
     }
+    
     //테이블 뷰 세팅
     private func setTableViewData() {
-        mainView.cartView.cartTableView.rx.setDelegate(self).disposed(by: disposeBag)
+        mainView.cartView.cartTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
+        
         mainView.cartView.cartTableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
         mainView.cartView.cartTableView.register(TotalAmountCell.self, forCellReuseIdentifier: TotalAmountCell.identifier)
     }
-    //타입에 따른 alert 표시
-    private func showAlert(_ type:AlertType){
-        let alert = UIAlertController(title: type.title, message: type.message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .default))
-        present(alert, animated: true)
-    }
+    
     //뷰 바인딩
     private func bindViewModel() {
         let input = MainViewModel.Input(
@@ -95,14 +94,18 @@ final class MainViewController: UIViewController {
         //메뉴 - 리스트 불러오기 바인딩
         output.setInfo
             .observe(on: MainScheduler.instance)
-            .do(onNext:{ [weak self] products in
-                self?.mainView.pageControl.numberOfPages = Int(round(Double(products.count)/4))
+            .withUnretained(self)
+            .do(onNext: { owner, products in
+                DispatchQueue.main.async {
+                    owner.mainView.pageControl.currentPage = 0
+                    owner.mainView.pageControl.numberOfPages = Int(ceil(Double(products.count) / 4))
+                }
             })
+            .map { _, products in products }
             .bind(to: mainView.productCollectionView.rx.items(
                 cellIdentifier: ProductCollectionViewCell.identifier,
-                cellType: ProductCollectionViewCell.self)
-            ) { _, product, cell in
-                cell.configure(product: product)
+                cellType: ProductCollectionViewCell.self)) { _, product, cell in
+                    cell.configure(product: product)
             }
             .disposed(by: disposeBag)
         
@@ -117,7 +120,7 @@ final class MainViewController: UIViewController {
         output.showAlert
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] type in
-                self?.showAlert(type)
+                self?.showAlert(type: type)
             })
             .disposed(by: disposeBag)
         
@@ -191,6 +194,7 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView()
     }
@@ -206,21 +210,19 @@ extension MainViewController: CartCellDelegate{
         guard let indexPath = mainView.cartView.cartTableView.indexPath(for: cell) else { return }
         viewModel.cellIutput.increaseRelay.accept(indexPath.row)
     }
+    
     //수량 - 버튼 이벤트
     func didTapDecrease(cell: CartTableViewCell) {
         guard let indexPath = mainView.cartView.cartTableView.indexPath(for: cell) else { return }
         viewModel.cellIutput.decreaseRelay.accept(indexPath.row)
     }
+    
     //수량이 0이 되면 삭제하는 이벤트
     func removeFormCart(product: Product) {
         viewModel.cellIutput.removeRelay.accept(product)
     }
-    //추가할 때마다 장바구니 크기를 동적으로 변환하기 위한 이벤트
-    func addedCart() {
-        self.mainView.cartView.updateTableViewHeight()
-        self.mainView.layoutIfNeeded()
-    }
 }
+
 // MARK: - UICollectionViewDelegate
 extension MainViewController: UICollectionViewDelegate {
     // 페이징(스크롤)을 위한 메서드, 2행의 상품이 지나가면 멈춤
