@@ -11,7 +11,9 @@ extension UIViewController {
     func showAlert(type: AlertType, confirmHandler: (() -> Void)? = nil) {
         let alert = UIAlertController(title: type.title, message: type.message, preferredStyle: .alert)
         
-        let confirm = UIAlertAction(title: "확인", style: .default)
+        let confirm = UIAlertAction(title: "확인", style: .default){ _ in
+            confirmHandler?()
+        }
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         
         alert.addAction(confirm)

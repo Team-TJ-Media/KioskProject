@@ -12,5 +12,4 @@ protocol CartCellDelegate:AnyObject{
     func removeFormCart(product:Product)
     func didTapIncrease(cell: CartTableViewCell)
     func didTapDecrease(cell: CartTableViewCell)
-    func addedCart()
 }

@@ -13,32 +13,32 @@ import Then
 
 final class MainView: UIView {
     
-    
     // 스크롤뷰 안에 잡혀질 컨텐트 뷰
     let mainContentView = UIView()
-    //TJ 미디어 타이틀 뷰
+    // TJ 미디어 타이틀 뷰
     let titleView = TitleView()
-    //메뉴 카테고리 뷰
+    // 메뉴 카테고리 뷰
     let categoryView = CategoryView(frame: .zero)
-    //메뉴 컬렉션 뷰
+    // 메뉴 컬렉션 뷰
     let productCollectionView = ProductCollectionView()
-    //장바구니 뷰
+    // 장바구니 뷰
     let cartView = CartView()
-    //최종금액 뷰
+    // 최종금액 뷰
     let paymentView = PaymentView()
-    //주문/취소 버튼 뷰
+    // 주문/취소 버튼 뷰
     let orderButtonView = OrderButtonView()
-    
+    // 구분선 뷰
     let dividerView = UIView().then {
         $0.backgroundColor = .gray
     }
     
-    //스크롤뷰
+    // 스크롤뷰
     let mainScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
     }
-    //페이지먼트컨트롤
+    
+    // 페이지컨트롤
     let pageControl = UIPageControl().then {
         $0.currentPage = 0
         $0.currentPageIndicatorTintColor = .black
@@ -55,9 +55,9 @@ final class MainView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //view 추가
     private func configureView() {
-        
         [mainScrollView, dividerView, orderButtonView].forEach {
             addSubview($0)
         }
@@ -70,11 +70,12 @@ final class MainView: UIView {
             mainContentView.addSubview($0)
         }
     }
+    
     //레이아웃 설정
     private func setConstraints() {
         let spacing: CGFloat = 16
         let totalSpacing = spacing * 3
-        let width = (UIScreen.main.bounds.width - spacing * 3) / 2
+        let width = (UIScreen.main.bounds.width - totalSpacing) / 2
         let height = width * 2 + totalSpacing
         
         mainScrollView.snp.makeConstraints {
@@ -123,11 +124,13 @@ final class MainView: UIView {
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-16)
         }
+        
         dividerView.snp.makeConstraints {
             $0.height.equalTo(0.5)
             $0.top.equalTo(orderButtonView)
             $0.horizontalEdges.equalToSuperview()
         }
+        
         orderButtonView.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-8)
             $0.leading.equalTo(safeAreaLayoutGuide)

@@ -37,11 +37,13 @@ class CartView: UIStackView {
         spacing = 4
         configureView()
         setConstraints()
+        setupContentSizeObserver()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //서브뷰 추가
     private func configureView() {
         //장바구니 헤더에 SubView 추가
@@ -53,17 +55,28 @@ class CartView: UIStackView {
             addArrangedSubview($0)
         }
     }
+    
     //레이아웃 설정
     private func setConstraints() {
         cartTableView.snp.makeConstraints {
             tableViewHeightConstraint = $0.height.equalTo(0).constraint
         }
     }
-    //테이블 뷰 동적 바인딩
-    func updateTableViewHeight() {
-        cartTableView.layoutIfNeeded()
-        let contentHeight = cartTableView.contentSize.height
-        tableViewHeightConstraint?.update(offset: contentHeight)
+    
+    // contentSize 변화를 감지하여 높이 업데이트
+    private func setupContentSizeObserver() {
+        cartTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+    }
+    
+    deinit {
+        cartTableView.removeObserver(self, forKeyPath: "contentSize")
+    }
+    
+    // contentSize 변경 감지 시, 높이 제약 업데이트
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "contentSize" {
+            tableViewHeightConstraint?.update(offset: cartTableView.contentSize.height)
+        }
     }
 }
 

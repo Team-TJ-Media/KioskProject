@@ -29,8 +29,9 @@ final class MainViewModel: ViewModel {
         let setTotalNum:BehaviorRelay<Int>                      //총 개수 output
         let showAlert: Observable<AlertType>                    //Alert
     }
+    
     // Cell 이벤트 Relay로 ViewModel에 명령 전달 - (수량 증가/감소, 삭제 이벤트)
-    struct CellInput{
+    struct CellInput {
         let increaseRelay = PublishRelay<Int>()
         let decreaseRelay = PublishRelay<Int>()
         let removeRelay = PublishRelay<Product>()
@@ -75,6 +76,7 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
     //장바구니 추가
     private func addToCart(input:Input) {
         input.selectedCell
@@ -95,6 +97,7 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
     //상품 수량 증가
     private func increaseCellNum(input:Input) {
         input.increaseTapped
@@ -110,6 +113,7 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
     //상품 수량 감소
     private func decreaseCellNum(input:Input) {
         input.decreaseTapped
@@ -128,6 +132,7 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
     //상품 삭제
     private func removeCell(input:Input) {
         input.removeTapped
@@ -140,6 +145,7 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
     }
+    
     //alert 이벤트 호출
     private func alertEvent(input:Input){
         let orderCancel = input.orderCancelTapped.map { AlertType.confirmCancel }
@@ -151,16 +157,24 @@ final class MainViewModel: ViewModel {
             .bind(to: showAlert)
             .disposed(by: disposeBag)
     }
+    func removeAllCart(){
+        totalNum.accept(0)
+        totalAmount.accept(0)
+        cartItems.accept([])
+    }
+    
     //총 개수 계산
     private func calculateTotalCount(items:[CartItem]) {
         let total = items.reduce(0) { $0 + $1.count }
         self.totalNum.accept(total)
     }
+    
     //총 금액 계산
     private func calculateTotalAmount(items:[CartItem]){
         let total = items.reduce(0) { $0 + $1.totalPrice }
         self.totalAmount.accept(total)
     }
+    
     //Intput -> Output 스트림
     func transform(input: Input) -> Output {
         
