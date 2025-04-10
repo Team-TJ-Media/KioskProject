@@ -13,18 +13,7 @@ import Then
 
 final class MainView: UIView {
     
-    //스크롤뷰
-    let mainScrollView = UIScrollView().then {
-        $0.showsVerticalScrollIndicator = false
-        $0.showsHorizontalScrollIndicator = false
-    }
-    //페이지먼트컨트롤
-    let pageControl = UIPageControl().then {
-        $0.numberOfPages = 3 // 페이지 수 동적 바인딩 필요
-        $0.currentPage = 0
-        $0.currentPageIndicatorTintColor = .black
-        $0.pageIndicatorTintColor = .systemGray3
-    }
+    
     // 스크롤뷰 안에 잡혀질 컨텐트 뷰
     let mainContentView = UIView()
     //TJ 미디어 타이틀 뷰
@@ -39,6 +28,18 @@ final class MainView: UIView {
     let paymentView = PaymentView()
     //주문/취소 버튼 뷰
     let orderButtonView = OrderButtonView()
+    //스크롤뷰
+    let mainScrollView = UIScrollView().then {
+        $0.showsVerticalScrollIndicator = false
+        $0.showsHorizontalScrollIndicator = false
+    }
+    //페이지먼트컨트롤
+    let pageControl = UIPageControl().then {
+        $0.numberOfPages = 3 // 페이지 수 동적 바인딩 필요
+        $0.currentPage = 0
+        $0.currentPageIndicatorTintColor = .black
+        $0.pageIndicatorTintColor = .systemGray3
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
