@@ -26,6 +26,8 @@ final class MainViewModel: ViewModel {
         let increaseTapped: Observable<Int>
         let decreaseTapped: Observable<Int>
         let removeTapped: Observable<Product>
+        let orderCancelTapped: ControlEvent<Void>
+        let orderTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -33,6 +35,7 @@ final class MainViewModel: ViewModel {
         let setCart: BehaviorRelay<[CartItem]>
         let setTotalAmount:BehaviorRelay<Double>
         let setTotalNum:BehaviorRelay<Int>
+        let showAlert: Observable<AlertType>
     }
     // Cell 이벤트 Relay로 ViewModel에 명령 전달 - (수량 증가/감소, 삭제 이벤트)
     struct CellInput{
@@ -151,10 +154,23 @@ final class MainViewModel: ViewModel {
             })
             .disposed(by: disposeBag)
         
+        let total = cartItems
+            .map { $0.reduce(0) { $0 + $1.totalPrice } }
+            .share(replay: 1)
+        
+        let orderCancel = input.orderCancelTapped.map { AlertType.confirmCancel }
+        
+        let orderResult = input.orderTapped
+            .withLatestFrom(total)
+            .map { $0.isZero ? AlertType.emptyCart : AlertType.confirmOrder(Int($0)) }
+
+        let showAlert = Observable.merge(orderCancel, orderResult)
+        
         return Output(setInfo: products,
                       setCart: cartItems,
                       setTotalAmount: totalAmount,
-                      setTotalNum: totalNum)
+                      setTotalNum: totalNum,
+                      showAlert: showAlert)
     }
     
 }

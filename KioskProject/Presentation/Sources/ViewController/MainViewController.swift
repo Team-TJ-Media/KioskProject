@@ -71,6 +71,12 @@ final class MainViewController: UIViewController {
         mainView.cartView.cartTableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
         mainView.cartView.cartTableView.register(TotalAmountCell.self, forCellReuseIdentifier: TotalAmountCell.identifier)
     }
+    //타입에 따른 alert 표시
+    private func showAlert(_ type:AlertType){
+        let alert = UIAlertController(title: type.title, message: type.message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true)
+    }
     //뷰 바인딩
     private func bindViewModel() {
         let input = MainViewModel.Input(
@@ -78,7 +84,9 @@ final class MainViewController: UIViewController {
             selectedCell: mainView.productCollectionView.rx.itemSelected.map { $0.row }.asObservable(),
             increaseTapped: viewModel.cellIutput.increaseRelay.asObservable(),
             decreaseTapped: viewModel.cellIutput.decreaseRelay.asObservable(),
-            removeTapped: viewModel.cellIutput.removeRelay.asObservable()
+            removeTapped: viewModel.cellIutput.removeRelay.asObservable(),
+            orderCancelTapped: mainView.orderButtonView.cancelButton.rx.tap,
+            orderTapped: mainView.orderButtonView.confirmButton.rx.tap
         )
         
         let output = viewModel.transform(input: input)
@@ -112,6 +120,14 @@ final class MainViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .map { "총 \($0)개" }
             .bind(to: mainView.cartView.orderCountLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        //Alert - 주문 종료에 따라 alert 실행
+        output.showAlert
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] type in
+                self?.showAlert(type)
+            })
             .disposed(by: disposeBag)
     }
 }

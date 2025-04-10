@@ -9,8 +9,8 @@ import UIKit
 
 class OrderButtonView: UIStackView {
     
-    private let confirmButton = OrderButton(orderStatus: .confirm)
-    private let cancelButton = OrderButton(orderStatus: .cancel)
+    let confirmButton = OrderButton(orderStatus: .confirm)
+    let cancelButton = OrderButton(orderStatus: .cancel)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
