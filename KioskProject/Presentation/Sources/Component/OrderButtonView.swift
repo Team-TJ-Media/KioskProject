@@ -15,12 +15,13 @@ class OrderButtonView: UIStackView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        [confirmButton, cancelButton].forEach {
+        [cancelButton, confirmButton].forEach {
             self.addArrangedSubview($0)
         }
         
-        self.axis = .vertical
-        self.spacing = 8
+        self.axis = .horizontal
+        self.spacing = 16
+        self.distribution = .fillEqually
         self.isLayoutMarginsRelativeArrangement = true
         self.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: 16)
     }
