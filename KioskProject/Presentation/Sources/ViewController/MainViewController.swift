@@ -79,6 +79,12 @@ final class MainViewController: UIViewController {
             .map { String(format: "%.2f", $0) }
             .bind(to: mainView.totalLabel.rx.text)
             .disposed(by: disposeBag)
+        
+        output.setTotalNum
+            .observe(on: MainScheduler.instance)
+            .map { "\($0)" }
+            .bind(to: mainView.numLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
 // MARK: - CartCellDelegate
