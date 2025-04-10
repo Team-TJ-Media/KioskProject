@@ -9,6 +9,6 @@ import Foundation
 
 protocol CartCellDelegate:AnyObject{
     func removeFormCart(product:Product)
-    func didTapIncrease(cell: CartItemCell)
-    func didTapDecrease(cell: CartItemCell)
+    func didTapIncrease(cell: CartTableViewCell)
+    func didTapDecrease(cell: CartTableViewCell)
 }

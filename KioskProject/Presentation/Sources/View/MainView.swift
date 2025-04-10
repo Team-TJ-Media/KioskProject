@@ -13,67 +13,64 @@ import Then
 
 final class MainView: UIView {
     
+    //스크롤뷰
     let mainScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
         $0.showsHorizontalScrollIndicator = false
     }
-    
-    // 스크롤뷰 안에 잡혀질 컨텐트 뷰
-    let mainContentView = UIView()
-    
-    let titleView = TitleView()
-    let categoryView = CategoryView(frame: .zero)
-    let tableView = UITableView()                                                                           //삭제할 것
-    let totalLabel = UILabel()
-    let numLabel = UILabel()
-    let productCollectionView = ProductCollectionView()
+    //페이지먼트컨트롤
     let pageControl = UIPageControl().then {
         $0.numberOfPages = 3 // 페이지 수 동적 바인딩 필요
         $0.currentPage = 0
         $0.currentPageIndicatorTintColor = .black
         $0.pageIndicatorTintColor = .systemGray3
     }
-    
+    // 스크롤뷰 안에 잡혀질 컨텐트 뷰
+    let mainContentView = UIView()
+    //TJ 미디어 타이틀 뷰
+    let titleView = TitleView()
+    //메뉴 카테고리 뷰
+    let categoryView = CategoryView(frame: .zero)
+    //메뉴 컬렉션 뷰
+    let productCollectionView = ProductCollectionView()
+    //장바구니 뷰
     let cartView = CartView()
+    //최종금액 뷰
     let paymentView = PaymentView()
-    
+    //주문/취소 버튼 뷰
     let orderButtonView = OrderButtonView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        self.backgroundColor = .systemBackground
         configureView()
         setConstraints()
-        tableView.register(CartItemCell.self, forCellReuseIdentifier: CartItemCell.identifier)              //삭제할 것
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //view 추가
     private func configureView() {
-        self.backgroundColor = .systemBackground
         
         [mainScrollView, orderButtonView].forEach {
-            self.addSubview($0)
+            addSubview($0)
         }
         
-        mainScrollView.addSubview(mainContentView)
+        [mainContentView].forEach {
+            mainScrollView.addSubview($0)
+        }
         
         [titleView, categoryView, productCollectionView, pageControl, cartView, paymentView].forEach {
             mainContentView.addSubview($0)
         }
     }
-    
+    //레이아웃 설정
     private func setConstraints() {
         let spacing: CGFloat = 16
         let totalSpacing = spacing * 3
         let width = (UIScreen.main.bounds.width - spacing * 3) / 2
         let height = width * 2 + totalSpacing
-        // productNameLabel height: 25
-        // priceLabel hegith: 22
-        // label spacing: 8
-//        let height = (width * 2) + totalSpacing + (47 * 2) + (8 * 3 * 2)
         
         mainScrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)

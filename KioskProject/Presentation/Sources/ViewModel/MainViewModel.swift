@@ -34,6 +34,12 @@ final class MainViewModel: ViewModel {
         let setTotalAmount:BehaviorRelay<Double>
         let setTotalNum:BehaviorRelay<Int>
     }
+    // Cell 이벤트 Relay로 ViewModel에 명령 전달 - (수량 증가/감소, 삭제 이벤트)
+    struct CellInput{
+        let increaseRelay = PublishRelay<Int>()
+        let decreaseRelay = PublishRelay<Int>()
+        let removeRelay = PublishRelay<Product>()
+    }
     
     var disposeBag = DisposeBag()
     
@@ -41,6 +47,7 @@ final class MainViewModel: ViewModel {
     private let cartItems = BehaviorRelay<[CartItem]>(value: [])
     private let totalAmount = BehaviorRelay<Double>(value: 0)
     private let totalNum = BehaviorRelay<Int>(value: 0)
+    let cellIutput = CellInput()
     
     private let useCase: KioskUseCaseInterface
     
@@ -66,7 +73,6 @@ final class MainViewModel: ViewModel {
             if !cartItems.value.contains(where: { $0.product.id == product.id }) {
                 let newCartItems = cartItems.value + [CartItem(product: product, count: 1)]
                 self.cartItems.accept(newCartItems)
-                self.totalAmountCount(items: newCartItems, index: index)
                 self.totalCount(items: newCartItems, index: index)
             }
         } catch {
@@ -78,7 +84,6 @@ final class MainViewModel: ViewModel {
         var items = self.cartItems.value
         guard items.indices.contains(index) else { return }
         items[index].count += 1
-        self.totalAmountCount(items: items, index: index)
         self.totalCount(items: items, index: index)
         self.cartItems.accept(items)
     }
@@ -90,7 +95,6 @@ final class MainViewModel: ViewModel {
         if items[index].count <= 0 {
             items.remove(at: index)
         }
-        self.totalAmountCount(items: items, index: index)
         self.totalCount(items: items, index: index)
         self.cartItems.accept(items)
     }
@@ -99,11 +103,6 @@ final class MainViewModel: ViewModel {
         var items = self.cartItems.value
         items.removeAll { $0.product.id == product.id }
         self.cartItems.accept(items)
-    }
-    
-    private func totalAmountCount(items:[CartItem], index:Int) {
-        let total = items.reduce(0) { $0 + $1.totalPrice }
-        self.totalAmount.accept(total)
     }
     
     private func totalCount(items:[CartItem], index:Int) {
@@ -126,7 +125,8 @@ final class MainViewModel: ViewModel {
         
         input.selectedCell
             .subscribe(onNext: { [weak self] index in
-                self?.addToCart(index: index)
+                guard let self else { return }
+                addToCart(index: index)
             })
             .disposed(by: disposeBag)
         

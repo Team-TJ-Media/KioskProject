@@ -1,34 +1,29 @@
-//
-//  CartTableViewCell.swift
-//  KioskProject
-//
-//  Created by 권순욱 on 4/8/25.
-//
-
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 class CartTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "CartTableViewCell"
     
-    var productName: String = ""
-    var orderCount: Int = 0
-    var orderAmounts: Int = 0
+    static let identifier = "CartTableViewCell"
+    
+    var disposeBag = DisposeBag()
+    weak var updateDelegate:UpdateHegihtDelegate?
+    weak var delegate: CartCellDelegate?
     
     private lazy var productNameLabel = UILabel().then {
-        $0.text = productName
         $0.font = .systemFont(ofSize: 14)
     }
     
     private lazy var orderCountLabel = UILabel().then {
-        $0.text = "\(orderCount)"
         $0.font = .systemFont(ofSize: 14)
+        $0.textAlignment = .center
     }
     
-    private lazy var orderamountsLabel = UILabel().then {
-        $0.text = "\(wonFormatter(orderAmounts))"
+    private lazy var orderAmountsLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
+        $0.textAlignment = .right
     }
     
     let incrementButton = UIButton().then {
@@ -43,65 +38,102 @@ class CartTableViewCell: UITableViewCell {
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 12)
     }
     
+    // MARK: - Initializers
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        setupUI()
+        setConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
+    // MARK: - Lifecycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
+
+    // MARK: - Configuration
+    
+    func configure(item: CartItem) {
+        productNameLabel.text = item.product.title
+        orderAmountsLabel.text = wonFormatter(Int(item.totalPrice))
+        orderCountLabel.text = "\(item.count)"
+        updateDelegate?.addedCart()
+        bindActions()
     }
     
-    func setupUI(productName: String, orderCount: Int, orderAmounts: Int) {
-        self.productName = productName
-        self.orderCount = orderCount
-        self.orderAmounts = orderAmounts
-        
-        [productNameLabel, orderCountLabel, orderamountsLabel, incrementButton, decrementButton]
-            .forEach { addSubview($0) }
-        
-        setConstraints()
+    // MARK: - UI Setup
+    
+    private func setupUI() {
+        [
+            productNameLabel,
+            orderCountLabel,
+            orderAmountsLabel,
+            incrementButton,
+            decrementButton
+        ].forEach { contentView.addSubview($0) }
     }
     
     private func setConstraints() {
         productNameLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview().offset(16)
-            $0.bottom.equalToSuperview().offset(-4)
+            $0.centerY.equalToSuperview()
+        }
+        
+        orderAmountsLabel.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.centerY.equalToSuperview()
         }
         
         orderCountLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-4)
-        }
-        
-        orderamountsLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
-            $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview().offset(-4)
+            $0.centerY.equalToSuperview()
+            $0.width.equalTo(30)
         }
         
         decrementButton.snp.makeConstraints {
             $0.trailing.equalTo(orderCountLabel.snp.leading).offset(-8)
-            $0.centerY.equalTo(orderCountLabel.snp.centerY)
+            $0.centerY.equalTo(orderCountLabel)
+            $0.width.height.equalTo(24)
         }
         
         incrementButton.snp.makeConstraints {
             $0.leading.equalTo(orderCountLabel.snp.trailing).offset(8)
-            $0.centerY.equalTo(orderCountLabel.snp.centerY)
+            $0.centerY.equalTo(orderCountLabel)
+            $0.width.height.equalTo(24)
         }
     }
 
+    // MARK: - Actions
+    
+    private func bindActions() {
+        incrementButton.rx.tap
+            .bind { [weak self] in
+                guard let self else { return }
+                self.delegate?.didTapIncrease(cell: self)
+            }
+            .disposed(by: disposeBag)
+
+        decrementButton.rx.tap
+            .bind { [weak self] in
+                guard let self else { return }
+                self.delegate?.didTapDecrease(cell: self)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Helpers
+    
     private func wonFormatter(_ number: Int) -> String {
         let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: NSNumber(value: number)) ?? ""
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = ","
+        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
 }
