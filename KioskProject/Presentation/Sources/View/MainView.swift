@@ -18,6 +18,7 @@ final class MainView: UIView {
     
     let categoryView = CategoryView(frame: .zero)
     let tableView = UITableView()                                                                           //삭제할 것
+    let totalLabel = UILabel()
     let productCollectionView = ProductCollectionView()
     
     let pageControl = UIPageControl().then {
@@ -40,7 +41,7 @@ final class MainView: UIView {
     }
     
     private func configureView() {
-        [titleView, orderButtonView, categoryView, productCollectionView, tableView, pageControl].forEach { //삭제할 것
+        [titleView, orderButtonView, categoryView, productCollectionView, tableView, totalLabel, pageControl].forEach { //삭제할 것
             self.addSubview($0)
         }
     }
@@ -79,6 +80,9 @@ final class MainView: UIView {
             $0.top.equalTo(pageControl.snp.bottom)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
             $0.height.equalTo(100)
+        }
+        totalLabel.snp.makeConstraints { 
+            $0.top.equalTo(tableView.snp.bottom)
         }
         orderButtonView.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-8)

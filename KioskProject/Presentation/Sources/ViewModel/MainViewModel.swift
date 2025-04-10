@@ -19,7 +19,7 @@ protocol ViewModel {
 }
 
 final class MainViewModel: ViewModel {
-
+    
     struct Input {
         let selectedIndex: Observable<Int>
         let selectedCell: Observable<Int>
@@ -27,22 +27,24 @@ final class MainViewModel: ViewModel {
         let decreaseTapped: Observable<Int>
         let removeTapped: Observable<Product>
     }
-
+    
     struct Output {
         let setInfo: BehaviorSubject<[Product]>
         let setCart: BehaviorRelay<[CartItem]>
+        let setTotalAmount:BehaviorRelay<Double>
     }
-
+    
     var disposeBag = DisposeBag()
-
+    
     private let products = BehaviorSubject<[Product]>(value: [])
     private let cartItems = BehaviorRelay<[CartItem]>(value: [])
+    private let totalAmount = BehaviorRelay<Double>(value: 0)
     private let useCase: KioskUseCaseInterface
-
+    
     init(useCase: KioskUseCaseInterface) {
         self.useCase = useCase
     }
-
+    
     private func fetchProducts(type: ProductType) {
         Task {
             do {
@@ -53,19 +55,20 @@ final class MainViewModel: ViewModel {
             }
         }
     }
-
+    
     private func addToCart(index: Int) {
         do {
             let products = try products.value()
             let product = products[index]
             if !cartItems.value.contains(where: { $0.product.id == product.id }) {
                 cartItems.accept(cartItems.value + [CartItem(product: product, count: 1)])
+                totalCount()
             }
         } catch {
             print(error.localizedDescription)
         }
     }
-
+    
     private func increaseCellNum(index:Int) {
         var items = self.cartItems.value
         guard items.indices.contains(index) else { return }
@@ -89,6 +92,11 @@ final class MainViewModel: ViewModel {
         self.cartItems.accept(items)
     }
     
+    private func totalCount() {
+        let total = cartItems.value.reduce(0) { $0 + $1.product.price }
+        self.totalAmount.accept(total)
+    }
+    
     func transform(input: Input) -> Output {
         input.selectedIndex
             .subscribe(onNext: { [weak self] index in
@@ -101,34 +109,34 @@ final class MainViewModel: ViewModel {
                 }
             })
             .disposed(by: disposeBag)
-
+        
         input.selectedCell
             .subscribe(onNext: { [weak self] index in
                 self?.addToCart(index: index)
             })
             .disposed(by: disposeBag)
-
+        
         input.increaseTapped
             .subscribe(onNext: { [weak self] index in
                 guard let self else { return }
                 increaseCellNum(index: index)
             })
             .disposed(by: disposeBag)
-
+        
         input.decreaseTapped
             .subscribe(onNext: { [weak self] index in
                 guard let self else { return }
                 decreaseCellNum(index: index)
             })
             .disposed(by: disposeBag)
-
+        
         input.removeTapped
             .subscribe(onNext: { [weak self] product in
                 guard let self else { return }
                 removeCell(product: product)
             })
             .disposed(by: disposeBag)
-
-        return Output(setInfo: products, setCart: cartItems)
+        return Output(setInfo: products, setCart: cartItems, setTotalAmount: totalAmount)
     }
+    
 }

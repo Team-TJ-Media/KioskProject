@@ -73,6 +73,12 @@ final class MainViewController: UIViewController {
                 cell.delegate = self
             }
             .disposed(by: disposeBag)
+        
+        output.setTotalAmount
+            .observe(on: MainScheduler.instance)
+            .map { String(format: "%.2f", $0) }
+            .bind(to: mainView.totalLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
 // MARK: - CartCellDelegate
