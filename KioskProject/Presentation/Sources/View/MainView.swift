@@ -66,7 +66,11 @@ final class MainView: UIView {
         let spacing: CGFloat = 16
         let totalSpacing = spacing * 3
         let width = (UIScreen.main.bounds.width - spacing * 3) / 2
-        let height = (width * 2) + totalSpacing
+        let height = width * 2 + totalSpacing
+        // productNameLabel height: 25
+        // priceLabel hegith: 22
+        // label spacing: 8
+//        let height = (width * 2) + totalSpacing + (47 * 2) + (8 * 3 * 2)
         
         mainScrollView.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)

@@ -30,6 +30,10 @@ final class ProductCollectionView: UICollectionView {
             let width = (bounds.width - totalSpacing) / 2
             let height = width
             
+            // productNameLabel height: 25
+            // priceLabel hegith: 22
+//            let height = width + 47 + (8 * 3)
+            
             layout.itemSize = CGSize(width: width, height: height)
             layout.minimumLineSpacing = spacing
             layout.minimumInteritemSpacing = spacing
