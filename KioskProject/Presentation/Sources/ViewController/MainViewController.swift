@@ -15,7 +15,7 @@ final class MainViewController: UIViewController {
     
     private let viewModel: MainViewModel
     
-    private var items = ["1", "2", "3", "4", "1", "2", "3", "4"]
+    private var items = [1, 2, 3, 4, 5, 6, 7, 8]
     
     override func loadView() {
         view = mainView
@@ -99,7 +99,7 @@ extension MainViewController: UITableViewDelegate {
         if section == 0 {
             return 8
         } else {
-            return 4
+            return 0
         }
     }
     
@@ -107,7 +107,7 @@ extension MainViewController: UITableViewDelegate {
         if section == 0 {
             return 0
         } else {
-            return 8
+            return 0
         }
     }
 }

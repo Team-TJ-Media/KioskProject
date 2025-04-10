@@ -28,9 +28,7 @@ final class ProductCollectionView: UICollectionView {
             let spacing: CGFloat = 16
             let totalSpacing = spacing * 3
             let width = (bounds.width - totalSpacing) / 2
-            // 여기서 item의 높이를 지정해주고 있는데 현재는 임의로 가로 + 60으로 지정해주는 중
-            let height = (width * 0.6) + 60
-//            let height = (bounds.height - totalSpacing) / 2
+            let height = width
             
             layout.itemSize = CGSize(width: width, height: height)
             layout.minimumLineSpacing = spacing
