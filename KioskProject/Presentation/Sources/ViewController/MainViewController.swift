@@ -177,7 +177,7 @@ final class CartItemCell: UITableViewCell {
     // MARK: - Configuration
     func configure(item: CartItem) {
         titleLabel.text = item.product.title
-        priceLabel.text = "\(item.product.price)원"
+        priceLabel.text = String(format: "%.2f", item.totalPrice)
         countLabel.text = "\(item.count)"
         bindActions()
     }

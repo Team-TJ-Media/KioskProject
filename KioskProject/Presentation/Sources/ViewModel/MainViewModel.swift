@@ -61,8 +61,9 @@ final class MainViewModel: ViewModel {
             let products = try products.value()
             let product = products[index]
             if !cartItems.value.contains(where: { $0.product.id == product.id }) {
-                cartItems.accept(cartItems.value + [CartItem(product: product, count: 1)])
-                totalCount()
+                let newCartItems = cartItems.value + [CartItem(product: product, count: 1)]
+                self.cartItems.accept(newCartItems)
+                self.totalCount(items: newCartItems, index: index)
             }
         } catch {
             print(error.localizedDescription)
@@ -73,6 +74,7 @@ final class MainViewModel: ViewModel {
         var items = self.cartItems.value
         guard items.indices.contains(index) else { return }
         items[index].count += 1
+        self.totalCount(items: items, index: index)
         self.cartItems.accept(items)
     }
     
@@ -83,6 +85,7 @@ final class MainViewModel: ViewModel {
         if items[index].count <= 0 {
             items.remove(at: index)
         }
+        self.totalCount(items: items, index: index)
         self.cartItems.accept(items)
     }
     
@@ -92,8 +95,8 @@ final class MainViewModel: ViewModel {
         self.cartItems.accept(items)
     }
     
-    private func totalCount() {
-        let total = cartItems.value.reduce(0) { $0 + $1.product.price }
+    private func totalCount(items:[CartItem], index:Int) {
+        let total = items.reduce(0) { $0 + $1.totalPrice }
         self.totalAmount.accept(total)
     }
     
@@ -136,6 +139,7 @@ final class MainViewModel: ViewModel {
                 removeCell(product: product)
             })
             .disposed(by: disposeBag)
+        
         return Output(setInfo: products, setCart: cartItems, setTotalAmount: totalAmount)
     }
     
