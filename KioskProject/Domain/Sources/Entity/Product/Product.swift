@@ -10,7 +10,7 @@ import Foundation
 struct Product: Hashable {
     let id: Int
     let title: String
-    let price: Double
+    let price: Int
     let thumbnail: String
 }
 

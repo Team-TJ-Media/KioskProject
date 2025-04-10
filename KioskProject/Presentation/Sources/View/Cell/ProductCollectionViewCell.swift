@@ -57,7 +57,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     public func configure(product:Product){
         productImageView.kf.setImage(with: URL(string: product.thumbnail))
         productNameLabel.text = product.title
-        priceLabel.text = "\(product.price)"
+        priceLabel.text = product.price.wonFormatter()
     }
     private func configureView() {
         contentView.addSubview(containerView)

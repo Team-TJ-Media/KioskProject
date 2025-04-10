@@ -11,6 +11,7 @@ import RxCocoa
 import SnapKit
 import RxDataSources
 
+//MARK: MainViewController
 final class MainViewController: UIViewController {
     
     private let mainView = MainView()
@@ -80,7 +81,7 @@ final class MainViewController: UIViewController {
     //뷰 바인딩
     private func bindViewModel() {
         let input = MainViewModel.Input(
-            selectedIndex: mainView.categoryView.rx.selectedSegmentIndex.asObservable(),
+            selectedSegment: mainView.categoryView.rx.selectedSegmentIndex.asObservable(),
             selectedCell: mainView.productCollectionView.rx.itemSelected.map { $0.row }.asObservable(),
             increaseTapped: viewModel.cellIutput.increaseRelay.asObservable(),
             decreaseTapped: viewModel.cellIutput.decreaseRelay.asObservable(),
@@ -102,19 +103,6 @@ final class MainViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        //장바구니 - 추가 바인딩
-        output.setCart
-            .map { items in
-                let total = items.reduce(0) { $0 + Int($1.totalPrice) }
-                let cartItems = items.map { CartSectionItem.cart(item: $0) }
-                let amountItem = CartSectionItem.amount(amount: total)
-                self.mainView.paymentView.paymentStackView.configure(totalAmount: total)
-                return [CartSection(model: "cart", items: cartItems), CartSection(model: "amount", items: [amountItem])]
-            }
-            .observe(on: MainScheduler.instance)
-            .bind(to: mainView.cartView.cartTableView.rx.items(dataSource: dataSources))
-            .disposed(by: disposeBag)
-        
         //장바구니 - 총 개수 바인딩
         output.setTotalNum
             .observe(on: MainScheduler.instance)
@@ -128,6 +116,24 @@ final class MainViewController: UIViewController {
             .subscribe(onNext: { [weak self] type in
                 self?.showAlert(type)
             })
+            .disposed(by: disposeBag)
+        
+        //장바구니 - 추가 바인딩
+        //장바구니 추가 시 총 금액도 함깨 바인딩하기 위함
+        Observable.combineLatest(output.setCart, output.setTotalAmount)
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] _, total in
+                self?.mainView.paymentView.paymentStackView.configure(totalAmount: total)
+            })
+            .map { items, total in
+                let cartItems = items.map { CartSectionItem.cart(item: $0) }
+                let amountItem = CartSectionItem.amount(amount: total)
+                return [
+                    CartSection(model: "cart", items: cartItems),
+                    CartSection(model: "amount", items: [amountItem])
+                ]
+            }
+            .bind(to: mainView.cartView.cartTableView.rx.items(dataSource: dataSources))
             .disposed(by: disposeBag)
     }
 }
@@ -192,28 +198,27 @@ extension MainViewController: UITableViewDelegate {
 }
 // MARK: - CartCellDelegate
 extension MainViewController: CartCellDelegate{
-    
+    //수량 + 버튼 이벤트
     func didTapIncrease(cell: CartTableViewCell) {
         guard let indexPath = mainView.cartView.cartTableView.indexPath(for: cell) else { return }
         viewModel.cellIutput.increaseRelay.accept(indexPath.row)
     }
-    
+    //수량 - 버튼 이벤트
     func didTapDecrease(cell: CartTableViewCell) {
         guard let indexPath = mainView.cartView.cartTableView.indexPath(for: cell) else { return }
         viewModel.cellIutput.decreaseRelay.accept(indexPath.row)
     }
-    
+    //수량이 0이 되면 삭제하는 이벤트
     func removeFormCart(product: Product) {
         viewModel.cellIutput.removeRelay.accept(product)
     }
-}
-// MARK: - UpdateHegihtDelegate
-extension MainViewController: UpdateHegihtDelegate{
+    //추가할 때마다 장바구니 크기를 동적으로 변환하기 위한 이벤트
     func addedCart() {
         self.mainView.cartView.updateTableViewHeight()
         self.mainView.layoutIfNeeded()
     }
 }
+// MARK: - UICollectionViewDelegate
 extension MainViewController: UICollectionViewDelegate {
     // 페이징(스크롤)을 위한 메서드, 2행의 상품이 지나가면 멈춤
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

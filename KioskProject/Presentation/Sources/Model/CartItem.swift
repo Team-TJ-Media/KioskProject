@@ -7,11 +7,12 @@
 
 import Foundation
 
+//MARK: 장바구니 아이템
 struct CartItem: Identifiable, Equatable {
     let product: Product
     var count: Int
-    var totalPrice:Double{
-        return product.price * Double(count)
+    var totalPrice:Int{
+        return product.price * count
     }
     
     var id: String {

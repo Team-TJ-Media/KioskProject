@@ -9,7 +9,6 @@ class CartTableViewCell: UITableViewCell {
     static let identifier = "CartTableViewCell"
     
     var disposeBag = DisposeBag()
-    weak var updateDelegate:UpdateHegihtDelegate?
     weak var delegate: CartCellDelegate?
     
     private lazy var productNameLabel = UILabel().then {
@@ -62,9 +61,9 @@ class CartTableViewCell: UITableViewCell {
     
     func configure(item: CartItem) {
         productNameLabel.text = item.product.title
-        orderAmountsLabel.text = wonFormatter(Int(item.totalPrice))
+        orderAmountsLabel.text = item.totalPrice.wonFormatter()
         orderCountLabel.text = "\(item.count)"
-        updateDelegate?.addedCart()
+        delegate?.addedCart()
         bindActions()
     }
     
@@ -126,14 +125,5 @@ class CartTableViewCell: UITableViewCell {
                 self.delegate?.didTapDecrease(cell: self)
             }
             .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Helpers
-    
-    private func wonFormatter(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.groupingSeparator = ","
-        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
 }

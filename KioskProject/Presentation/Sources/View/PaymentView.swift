@@ -99,8 +99,8 @@ class PaymentStackView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     func configure(totalAmount:Int){
-        totalAmountLabel.text = "\(totalAmount)"
-        finalPriceLabel.text = "\(totalAmount + 2500)"
+        totalAmountLabel.text = totalAmount.wonFormatter()
+        finalPriceLabel.text = (totalAmount + 2500).wonFormatter()
     }
     private func configureSubView(){
         [totalAmountTitle, totalAmountLabel].forEach {
@@ -136,12 +136,5 @@ class PaymentStackView: UIStackView {
             $0.top.equalTo(deliveryFeeView.snp.bottom).offset(16)
             $0.trailing.equalToSuperview().offset(-16)
         }
-    }
-    
-    private func wonFormatter(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: NSNumber(value: number)) ?? ""
     }
 }

@@ -34,7 +34,7 @@ class TotalAmountCell: UITableViewCell {
     }
     
     func configure(amount:Int){
-        orderamountsLabel.text = "\(amount)"
+        orderamountsLabel.text = amount.wonFormatter()
     }
     
     private func setupUI() {
@@ -56,12 +56,5 @@ class TotalAmountCell: UITableViewCell {
             $0.trailing.equalToSuperview().offset(-16)
             $0.bottom.equalToSuperview().offset(-4)
         }
-    }
-
-    private func wonFormatter(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: NSNumber(value: number)) ?? ""
     }
 }

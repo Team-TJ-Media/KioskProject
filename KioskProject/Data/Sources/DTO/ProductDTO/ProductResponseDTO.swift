@@ -32,7 +32,7 @@ struct ProductResponse: Codable {
     let thumbnail: String
     
     func toEntity() -> Product{
-        return Product(id: id, title: title, price: price, thumbnail: thumbnail)
+        return Product(id: id, title: title, price: price.exchnageAmount(), thumbnail: thumbnail)
     }
 }
 
