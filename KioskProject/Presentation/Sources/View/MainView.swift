@@ -28,6 +28,11 @@ final class MainView: UIView {
     let paymentView = PaymentView()
     //주문/취소 버튼 뷰
     let orderButtonView = OrderButtonView()
+    
+    let dividerView = UIView().then {
+        $0.backgroundColor = .gray
+    }
+    
     //스크롤뷰
     let mainScrollView = UIScrollView().then {
         $0.showsVerticalScrollIndicator = false
@@ -35,7 +40,6 @@ final class MainView: UIView {
     }
     //페이지먼트컨트롤
     let pageControl = UIPageControl().then {
-        $0.numberOfPages = 3 // 페이지 수 동적 바인딩 필요
         $0.currentPage = 0
         $0.currentPageIndicatorTintColor = .black
         $0.pageIndicatorTintColor = .systemGray3
@@ -54,7 +58,7 @@ final class MainView: UIView {
     //view 추가
     private func configureView() {
         
-        [mainScrollView, orderButtonView].forEach {
+        [mainScrollView, dividerView, orderButtonView].forEach {
             addSubview($0)
         }
         
@@ -117,9 +121,13 @@ final class MainView: UIView {
             $0.top.equalTo(cartView.snp.bottom).offset(16)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview().offset(-16)
-            $0.bottom.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-16)
         }
-        
+        dividerView.snp.makeConstraints {
+            $0.height.equalTo(0.5)
+            $0.top.equalTo(orderButtonView)
+            $0.horizontalEdges.equalToSuperview()
+        }
         orderButtonView.snp.makeConstraints {
             $0.bottom.equalTo(safeAreaLayoutGuide).offset(-8)
             $0.leading.equalTo(safeAreaLayoutGuide)

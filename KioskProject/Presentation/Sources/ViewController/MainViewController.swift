@@ -95,6 +95,9 @@ final class MainViewController: UIViewController {
         //메뉴 - 리스트 불러오기 바인딩
         output.setInfo
             .observe(on: MainScheduler.instance)
+            .do(onNext:{ [weak self] products in
+                self?.mainView.pageControl.numberOfPages = Int(round(Double(products.count)/4))
+            })
             .bind(to: mainView.productCollectionView.rx.items(
                 cellIdentifier: ProductCollectionViewCell.identifier,
                 cellType: ProductCollectionViewCell.self)

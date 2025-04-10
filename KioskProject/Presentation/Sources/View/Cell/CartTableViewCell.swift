@@ -82,6 +82,7 @@ class CartTableViewCell: UITableViewCell {
     private func setConstraints() {
         productNameLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
+            $0.width.equalTo(100)
             $0.centerY.equalToSuperview()
         }
         

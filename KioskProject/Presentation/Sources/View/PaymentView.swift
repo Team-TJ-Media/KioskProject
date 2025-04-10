@@ -77,7 +77,7 @@ class PaymentStackView: UIStackView {
     }
     
     private let deliveryFeeLabel = UILabel().then {
-        $0.text = "₩2500"
+        $0.text = 2500.wonFormatter()
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
         $0.textColor = .darkGray
     }
