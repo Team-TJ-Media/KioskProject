@@ -11,6 +11,8 @@ import SnapKit
 
 import Then
 
+import Kingfisher
+
 final class ProductCollectionViewCell: UICollectionViewCell {
     
     let containerView = UIView().then {
@@ -20,18 +22,15 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
     
     let productImageView = UIImageView().then {
-        $0.backgroundColor = .systemGray3
         $0.contentMode = .scaleAspectFit
     }
     
     let productNameLabel = UILabel().then {
-        $0.text = "iPhone 16 Pro"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 16, weight: .regular)
     }
     
     let priceLabel = UILabel().then {
-        $0.text = "₩ 1,200,000"
         $0.textColor = .black
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
@@ -55,7 +54,11 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         self.layer.cornerRadius = 8
         self.clipsToBounds = true
     }
-    
+    public func configure(product:Product){
+        productImageView.kf.setImage(with: URL(string: product.thumbnail))
+        productNameLabel.text = product.title
+        priceLabel.text = product.price.wonFormatter()
+    }
     private func configureView() {
         contentView.addSubview(containerView)
         [productImageView, productNameLabel, priceLabel].forEach {
@@ -77,7 +80,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
         productNameLabel.snp.makeConstraints {
             $0.top.equalTo(productImageView.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(8)
+            $0.horizontalEdges.equalToSuperview().inset(8)
         }
         
         priceLabel.snp.makeConstraints {

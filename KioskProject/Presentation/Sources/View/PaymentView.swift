@@ -10,25 +10,27 @@ import SnapKit
 import Then
 
 class PaymentView: UIView {
+    
+    let paymentStackView = PaymentStackView()
+    
     private let titleLabel = UILabel().then {
         $0.text = "최종금액"
         $0.font = .systemFont(ofSize: 20, weight: .bold)
     }
-    private let paymentStackView = PaymentStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(titleLabel)
-        addSubview(paymentStackView)
-        
+        configureSubView()
         setConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    private func configureSubView(){
+        addSubview(titleLabel)
+        addSubview(paymentStackView)
+    }
     private func setConstraints() {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -46,8 +48,6 @@ class PaymentView: UIView {
 }
 
 class PaymentStackView: UIStackView {
-    var totalAmounts: Int
-    var deliveryFee: Int
     
     private let totalAmountTitle = UILabel().then {
         $0.text = "상품 금액"
@@ -61,60 +61,60 @@ class PaymentStackView: UIStackView {
         $0.textColor = .gray
     }
     
-    private let totalAmountView = UIStackView()
-    private let deliveryFeeView = UIStackView()
+    private let totalAmountView = UIStackView().then{
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+    }
+    private let deliveryFeeView = UIStackView().then{
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+    }
     
-    private lazy var totalAmountLabel = UILabel().then {
-        $0.text = "\(wonFormatter(totalAmounts))"
+    private let totalAmountLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 15, weight: .semibold)
+        $0.textColor = .darkGray
+        
+    }
+    
+    private let deliveryFeeLabel = UILabel().then {
+        $0.text = 2500.wonFormatter()
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
         $0.textColor = .darkGray
     }
     
-    private lazy var deliveryFeeLabel = UILabel().then {
-        $0.text = "\(wonFormatter(deliveryFee))"
-        $0.font = .systemFont(ofSize: 15, weight: .semibold)
-        $0.textColor = .darkGray
-    }
-    
-    private lazy var finalPriceLabel = UILabel().then {
-        $0.text = "\(wonFormatter(totalAmounts + deliveryFee))"
-        $0.font = .systemFont(ofSize: 18, weight: .semibold)
+    private let finalPriceLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 27, weight: .semibold)
         $0.textColor = .black
     }
-    
-    init(totalAmounts: Int = 600000, deliveryFee: Int = 2500) {
-        self.totalAmounts = totalAmounts
-        self.deliveryFee = deliveryFee
-        
-        super.init(frame: .zero)
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         layer.borderWidth = BorderStyle.width
         layer.borderColor = BorderStyle.color
         layer.cornerRadius = BorderStyle.cornerRadius
-        
-        [totalAmountTitle, totalAmountLabel].forEach {
-            totalAmountView.addArrangedSubview($0)
-        }
-        totalAmountView.axis = .horizontal
-        totalAmountView.distribution = .equalSpacing
-        
-        [deliveryFeeTitle, deliveryFeeLabel].forEach {
-            deliveryFeeView.addArrangedSubview($0)
-        }
-        deliveryFeeView.axis = .horizontal
-        deliveryFeeView.distribution = .equalSpacing
-        
-        [totalAmountView, deliveryFeeView, finalPriceLabel].forEach {
-            addSubview($0)
-        }
-        
+        configureSubView()
         setConstraints()
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    func configure(totalAmount:Int){
+        totalAmountLabel.text = totalAmount.wonFormatter()
+        finalPriceLabel.text = (totalAmount + 2500).wonFormatter()
+    }
+    private func configureSubView(){
+        [totalAmountTitle, totalAmountLabel].forEach {
+            totalAmountView.addArrangedSubview($0)
+        }
+        
+        [deliveryFeeTitle, deliveryFeeLabel].forEach {
+            deliveryFeeView.addArrangedSubview($0)
+        }
+        
+        [totalAmountView, deliveryFeeView, finalPriceLabel].forEach {
+            addSubview($0)
+        }
+    }
     private func setConstraints() {
         snp.makeConstraints {
             $0.height.equalTo(120)
@@ -136,12 +136,5 @@ class PaymentStackView: UIStackView {
             $0.top.equalTo(deliveryFeeView.snp.bottom).offset(16)
             $0.trailing.equalToSuperview().offset(-16)
         }
-    }
-    
-    private func wonFormatter(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: NSNumber(value: number)) ?? ""
     }
 }

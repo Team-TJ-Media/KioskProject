@@ -30,7 +30,7 @@ enum AlertType {
         case .confirmCancel:
             return "장바구니 내역이 삭제됩니다.\n정말 취소하시겠습니까?"
         case .confirmOrder(let price):
-            return "총 결제 금액은 ₩\(price)입니다. 결제하시겠습니까?"
+            return "총 결제 금액은 \(price.wonFormatter())입니다. 결제하시겠습니까?"
         }
     }
 }
