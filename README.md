@@ -8,12 +8,13 @@
 ## 📸 화면 미리보기
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7d099a97-d3ef-400e-b90b-aec6f269e60a" width="100%" />
+  <img src="https://github.com/user-attachments/assets/2ca6b64c-a5cf-47f1-87de-fcf43e65d763" width="100%" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0c732e26-3770-4c2c-bce4-93f523d4b550" width="24.6%"/>
-  <img src="https://github.com/user-attachments/assets/0d020fe5-25fc-4a45-b5b4-1cae9f82e131" width="24.6%"/>
+
+  <img src="https://github.com/user-attachments/assets/0f561be4-1b7e-4937-b8ba-fc35dc0c8614" width="24.6%"/>
+  <img src="https://github.com/user-attachments/assets/8f25a3fa-4706-44b7-85ac-dc7d5c4f06a7" width="24.6%"/>
   <img src="https://github.com/user-attachments/assets/5cfa813b-4372-44ea-9cb7-ebede1285c88" width="24.6%"/>
   <img src="https://github.com/user-attachments/assets/a99306a3-8c9d-4dbd-a547-1321eab580f6" width="24.6%"/>
 </p>
