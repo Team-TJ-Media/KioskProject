@@ -17,7 +17,7 @@ class TitleView: UIStackView {
     private let imageView = UIImageView().then {
         $0.image = UIImage(systemName: "laptopcomputer.and.iphone")
         $0.contentMode = .scaleAspectFit
-        $0.tintColor = .black
+        $0.tintColor = .label
     }
     
     override init(frame: CGRect) {

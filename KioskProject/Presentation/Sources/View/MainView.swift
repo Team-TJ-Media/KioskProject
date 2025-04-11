@@ -41,7 +41,7 @@ final class MainView: UIView {
     // 페이지컨트롤
     let pageControl = UIPageControl().then {
         $0.currentPage = 0
-        $0.currentPageIndicatorTintColor = .black
+        $0.currentPageIndicatorTintColor = .label
         $0.pageIndicatorTintColor = .systemGray3
     }
 

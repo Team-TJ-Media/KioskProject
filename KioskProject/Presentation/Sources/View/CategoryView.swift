@@ -41,15 +41,13 @@ final class CategoryView: UISegmentedControl {
     }
     
     private func configureStyle() {
-//        self.backgroundColor = .systemBackground
-//        self.selectedSegmentTintColor = .black
         
         let normalAttributes: [NSAttributedString.Key : Any] = [
             .foregroundColor: UIColor.systemGray,
             .font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
         let selectedAttributes: [NSAttributedString.Key : Any] = [
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor.label,
             .font: UIFont.systemFont(ofSize: 17, weight: .bold)
         ]
         

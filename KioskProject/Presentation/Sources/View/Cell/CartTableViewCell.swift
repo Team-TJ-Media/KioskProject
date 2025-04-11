@@ -27,13 +27,13 @@ class CartTableViewCell: UITableViewCell {
     
     let incrementButton = UIButton().then {
         $0.setTitle("+", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        $0.setTitleColor(.label, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 12)
     }
     
     let decrementButton = UIButton().then {
         $0.setTitle("-", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
+        $0.setTitleColor(.label, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 12)
     }
     
@@ -42,6 +42,7 @@ class CartTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        backgroundColor = .systemBackground
         setupUI()
         setConstraints()
     }

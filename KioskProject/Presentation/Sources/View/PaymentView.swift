@@ -72,19 +72,19 @@ class PaymentStackView: UIStackView {
     
     private let totalAmountLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
-        $0.textColor = .darkGray
+        $0.textColor = .systemGray
         
     }
     
     private let deliveryFeeLabel = UILabel().then {
         $0.text = 2500.wonFormatter()
         $0.font = .systemFont(ofSize: 15, weight: .semibold)
-        $0.textColor = .darkGray
+        $0.textColor = .systemGray
     }
     
     private let finalPriceLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 27, weight: .semibold)
-        $0.textColor = .black
+        $0.textColor = .label
     }
     override init(frame: CGRect) {
         super.init(frame: frame)

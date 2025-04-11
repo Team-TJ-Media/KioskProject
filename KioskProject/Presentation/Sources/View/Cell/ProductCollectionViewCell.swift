@@ -26,12 +26,12 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     }
     
     let productNameLabel = UILabel().then {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 16, weight: .regular)
     }
     
     let priceLabel = UILabel().then {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
     
@@ -88,13 +88,12 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
         productNameLabel.snp.makeConstraints {
             $0.top.equalTo(productImageView.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(8)
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(productNameLabel.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(8)
-//            $0.bottom.equalToSuperview().offset(-8)
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
     }
     
