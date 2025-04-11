@@ -35,6 +35,17 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
     
+    lazy var hotLabel = PaddingLabel().then {
+        $0.text = "Hot"
+        $0.textColor = .white
+        $0.backgroundColor = .red
+        $0.layer.cornerRadius = 5
+        $0.clipsToBounds = true
+        $0.layer.masksToBounds = true
+        $0.isHidden = Bool.random()
+        $0.font = .systemFont(ofSize: 13, weight: .semibold)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -70,7 +81,7 @@ final class ProductCollectionViewCell: UICollectionViewCell {
     
     private func configureView() {
         contentView.addSubview(containerView)
-        [productImageView, productNameLabel, priceLabel].forEach {
+        [productImageView, productNameLabel, priceLabel, hotLabel].forEach {
             containerView.addSubview($0)
         }
     }
@@ -93,8 +104,14 @@ final class ProductCollectionViewCell: UICollectionViewCell {
         
         priceLabel.snp.makeConstraints {
             $0.top.equalTo(productNameLabel.snp.bottom).offset(8)
-            $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.leading.equalToSuperview().inset(16)
+        }
+        hotLabel.snp.makeConstraints {
+            $0.leading.equalTo(priceLabel.snp.trailing).offset(5)
+            $0.centerY.equalTo(priceLabel)
         }
     }
     
 }
+
+
