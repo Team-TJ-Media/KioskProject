@@ -1,11 +1,22 @@
 # 📱 KioskProject
 
-TJ 미디어 팀의 키오스크 애플리케이션은 사용자 친화적인 인터페이스를 제공하여 상품 주문 및 결제 과정을 간소화합니다.
-이 앱은 터치 기반의 직관적인 디자인을 통해 다양한 사용자들이 쉽게 접근하고 사용할 수 있도록 설계되었습니다.
+- TJ 미디어 팀의 키오스크 애플리케이션은 사용자 친화적인 인터페이스를 제공하여 상품 주문 및 결제 과정을 간소화합니다.
+- 이 앱은 터치 기반의 직관적인 디자인을 통해 다양한 사용자들이 쉽게 접근하고 사용할 수 있도록 설계되었습니다.
 
 ---
 
 ## 📸 화면 미리보기
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7d099a97-d3ef-400e-b90b-aec6f269e60a" width="100%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0c732e26-3770-4c2c-bce4-93f523d4b550" width="24.6%"/>
+  <img src="https://github.com/user-attachments/assets/0d020fe5-25fc-4a45-b5b4-1cae9f82e131" width="24.6%"/>
+  <img src="https://github.com/user-attachments/assets/5cfa813b-4372-44ea-9cb7-ebede1285c88" width="24.6%"/>
+  <img src="https://github.com/user-attachments/assets/a99306a3-8c9d-4dbd-a547-1321eab580f6" width="24.6%"/>
+</p>
 
 ---
 
@@ -17,6 +28,7 @@ TJ 미디어 팀의 키오스크 애플리케이션은 사용자 친화적인 �
 ---
 
 ## 📂 폴더 구조
+
 ```
 KioskProject
 ├── App
