@@ -84,7 +84,7 @@ class CartTableView: UITableView {
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: .zero, style: .grouped)
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         layer.borderWidth = BorderStyle.width
         layer.borderColor = BorderStyle.color
         layer.cornerRadius = BorderStyle.cornerRadius

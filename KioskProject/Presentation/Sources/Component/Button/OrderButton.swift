@@ -25,9 +25,9 @@ class OrderButton: UIButton {
         func titleColor() -> UIColor {
             switch self {
             case .confirm:
-                return .black
+                return .label
             case .cancel:
-                return .white
+                return .systemBackground
             }
         }
     }
@@ -44,10 +44,10 @@ class OrderButton: UIButton {
         layer.cornerRadius = 8
         
         if orderStatus == .confirm {
-            layer.borderColor = UIColor.black.cgColor
+            layer.borderColor = UIColor.label.cgColor
             layer.borderWidth = 2
         } else {
-            backgroundColor = .black
+            backgroundColor = .label
         }
         
         snp.makeConstraints {
